@@ -6,8 +6,13 @@ class Eventos():
         self.cantidad_maxima_de_personas = cantidad_maxima_de_personas
         self.localidad = localidad
 
+
+ # creacion del evento con una localidad, fecha, tipo , cantidad de personas
     def crearEventos(self):
         pass
 
+
+
+ # cantidad exacta de personas en un evento
     def contabilizadorPersonas(self):
         return (self.cantidad_maxima_de_personas - self.cantidad_de_personas)

@@ -1,7 +1,8 @@
 from GestionUsuarios.Usuarios import Usuarios
 
 
-class Administradores(Usuarios):
+class Administradores():
+
     def __init__(self,usuario,contraseña):
         self.usuario = usuario
         self.contraseña = contraseña

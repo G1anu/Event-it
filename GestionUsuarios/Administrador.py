@@ -8,6 +8,14 @@ class Administrador():
         self.contraseña = contraseña
         self.accesoAABM = accesoAABM
 
+    def booleanNumericoAccesoAABM(self):
+        if self.accesoAABM == True:
+            return 1
+        else:
+            return 0
+
+    def administradorString(self):
+        return (str(self.usuario) + "," + str(self.contraseña) +  "," + str(self.booleanNumericoAccesoAABM()))
 
     def getUsuario(self):
         return self.usuario
@@ -16,17 +24,17 @@ class Administrador():
         return self.contraseña
 
 # pasarle un ciudadano y desbloquearlo
-    def desbloquearCiudadanos(self,Ciudadano):
+    def desbloquearCiudadano(self,Ciudadano):
         Ciudadano.estaBloqueado = False
         Ciudadano.solicitudesRechazadas = 0
         return ("el ciudadano se ha desbloqueado")
 
 # pasarle un ciudadano y bloquearlo
-    def bloquearCiudadanos(self,Ciudadano):
+    def bloquearCiudadano(self,Ciudadano):
         Ciudadano.estaBloqueado = True
         return("el ciudadano se ha bloqueado")
 
-
 # los administradores puedan crear tipos de eventos
-    def administrarEventos(self,Evento):
-        return Evento.tipo_de_evento()
+    def CrearTipoDeEvento(self,nuevoTipo):
+        #esto va a tener que llamar a la persistencia para guardarse en una lista, como todavia no la hicimos no podemos avanzarlo
+        pass

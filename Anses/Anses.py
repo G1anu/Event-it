@@ -7,6 +7,7 @@ class Anses():
         pass
 
     def escribirAdministrador(self):
+        pass
 
     def escribirEvento(self):
         pass
@@ -17,5 +18,3 @@ class Anses():
 
     def leerUsuarios(self):
         pass
-
-

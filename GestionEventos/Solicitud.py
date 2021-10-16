@@ -6,5 +6,7 @@ class Solicitud():
         self.CUILSender = CUILSender
         self.CUILReceiver = CUILReceiver
         self.evento = evento
-        self.fecha = datetime.datetime
+        self.fechaDeEnvio = datetime.now()
 
+    def EventoString(self):
+        return (str(self.CUILSender) + "," + str(self.CUILReceiver) + "," + str(self.evento)+ "," + str(self.fechaDeEnvio))

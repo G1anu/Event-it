@@ -1,4 +1,5 @@
-
+import GestionEventos.Evento
+from GestionEventos.Solicitud import Solicitud
 
 
 class Ciudadano():
@@ -8,14 +9,18 @@ class Ciudadano():
         self.solicitudesRechazadas = 0
         self.estaBloqueado = False
 
-    def booleanNumerico(self):
+    def booleanNumericoEstaBloqueado(self):
         if self.estaBloqueado == True:
             return 1
         else:
             return 0
 
+    def crearEvento(self,newDate,tipo_de_evento,cantidad_de_personas,cantidad_maxima_de_personas,localidad):
+        newEvento = GestionEventos.Evento(newDate,tipo_de_evento,cantidad_de_personas,cantidad_maxima_de_personas,localidad)
+        return newEvento
+
     def ciudadanoString(self):
-        return (str(self.CUIL) + "," + str(self.telefono) + "," + str(self.solicitudesRechazadas)+ "," + str(self.booleanNumerico()))
+        return (str(self.CUIL) + "," + str(self.telefono) + "," + str(self.solicitudesRechazadas)+ "," + str(self.booleanNumericoEstaBloqueado()))
 
     def aceptarSolicitud(self):
         pass
@@ -23,16 +28,12 @@ class Ciudadano():
     def rechazarSolicitud(self):
         pass
 
-    def enviarSolicitud(self,ciudadano,evento):
+    def enviarSolicitud(self, Ciudadano, CUILAEnviar, evento):
         if self.estaBloqueado == True:
             return "Estas bloqueado, contactate con un administrador para ser desbloqueado."
+        elif evento.estaLleno == True:
+            return "el evento no tiene mas capacidad disponible"
         else:
-            return Solicitud
-
-
-
-
-
-
-
-
+            CuilSender = Ciudadano.CUIL
+            newSolicitud = Solicitud(CuilSender, CUILAEnviar, evento)
+            return newSolicitud

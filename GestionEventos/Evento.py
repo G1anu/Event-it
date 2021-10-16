@@ -8,21 +8,22 @@ class Evento():
         self.localidad = localidad
         self.estaLleno = False
 
-#creacion del evento con una localidad, fecha, tipo , cantidad de personas
-    def crearEvento(self):
-        pass
-
+    def booleanNumericoEstaLleno(self):
+        if self.estaLleno == True:
+            return 1
+        else:
+            return 0
 # imprimir por pantalla el evento creado o para guardar en Persistencia
     def eventoString(self):
-        return (str(self.fecha) + "," + str(self.tipo_de_evento) + "," + str(self.cantidad_de_personas) + "," + str(self.cantidad_maxima_de_personas) + "," + str(self.localidad))
+        return (str(self.fecha) + "," + str(self.tipo_de_evento) + "," + str(self.cantidad_de_personas) + "," + str(self.cantidad_maxima_de_personas) + "," + str(self.localidad) + "," + str(self.booleanNumericoEstaLleno()))
 
     def verificarSiEstaLleno(self):
-        if (self.cantidad_de_personas >= self.cantidad_maxima_de_personas):
-            self.estaLleno = True
+        if(self.cantidad_de_personas >= self.cantidad_maxima_de_personas):
+            self.estaLleno == True
             return ("Este evento está en su capacidad maxima")
         else:
             pass
 
-    # devuelve la cantidad de personas
+# devuelve la cantidad de personas
     def contabilizadorPersonas(self):
-        return (self.cantidad_de_personas)
+        return self.cantidad_de_personas

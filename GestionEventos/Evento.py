@@ -16,17 +16,13 @@ class Evento():
     def eventoString(self):
         return (str(self.fecha) + "," + str(self.tipo_de_evento) + "," + str(self.cantidad_de_personas) + "," + str(self.cantidad_maxima_de_personas) + "," + str(self.localidad))
 
-
     def verificarSiEstaLleno(self):
-        if(self.cantidad_de_personas >= self.cantidad_maxima_de_personas):
-            self.estaLleno == True
+        if (self.cantidad_de_personas >= self.cantidad_maxima_de_personas):
+            self.estaLleno = True
             return ("Este evento está en su capacidad maxima")
         else:
             pass
 
-
-
-
-# devuelve la cantidad de personas
+    # devuelve la cantidad de personas
     def contabilizadorPersonas(self):
         return (self.cantidad_de_personas)

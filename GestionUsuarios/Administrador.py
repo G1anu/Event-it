@@ -20,12 +20,13 @@ class Administrador():
         Ciudadano.estaBloqueado = False
         Ciudadano.solicitudesRechazadas = 0
         return ("el ciudadano se ha desbloqueado")
+
 # pasarle un ciudadano y bloquearlo
     def bloquearCiudadanos(self,Ciudadano):
         Ciudadano.estaBloqueado = True
         return("el ciudadano se ha bloqueado")
 
 
-# los ciudadanos puedan crear eventos
+# los administradores puedan crear tipos de eventos
     def administrarEventos(self,Evento):
-        pass
+        return Evento.tipo_de_evento()

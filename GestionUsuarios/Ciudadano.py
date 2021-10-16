@@ -13,7 +13,8 @@ class Ciudadano():
             return 1
         else:
             return 0
-    def toString(self):
+
+    def ciudadanoString(self):
         return (str(self.CUIL) + "," + str(self.telefono) + "," + str(self.solicitudesRechazadas)+ "," + str(self.booleanNumerico()))
 
     def aceptarSolicitud(self):

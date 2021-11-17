@@ -19,9 +19,10 @@ class Ciudadano():
         newEvento = GestionEventos.Evento(newDate,tipo_de_evento,cantidad_de_personas,cantidad_maxima_de_personas,localidad)
         return newEvento
 
-    def ciudadanoString(self):
-        return (str(self.CUIL) + "," + str(self.telefono) + "," + str(self.solicitudesRechazadas)+ "," + str(self.booleanNumericoEstaBloqueado()))
+    def ciudadanoAEscribir(self):
+        return [str(self.CUIL) , str(self.telefono), str(self.solicitudesRechazadas) , str(self.booleanNumericoEstaBloqueado())]
 
+    #(str(self.CUIL) + "," + str(self.telefono) + "," + str(self.solicitudesRechazadas) + "," + str(self.booleanNumericoEstaBloqueado()))
     def aceptarSolicitud(self):
         pass
 

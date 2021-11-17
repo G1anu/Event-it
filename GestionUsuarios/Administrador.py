@@ -15,7 +15,7 @@ class Administrador():
             return 0
 
     def administradorString(self):
-        return (str(self.usuario) + "," + str(self.contraseña) +  "," + str(self.booleanNumericoAccesoAABM()))
+        return (str(self.usuario) + "," + str(self.contraseña) + "," + str(self.booleanNumericoAccesoAABM()))
 
     def getUsuario(self):
         return self.usuario
@@ -27,12 +27,12 @@ class Administrador():
     def desbloquearCiudadano(self,Ciudadano):
         Ciudadano.estaBloqueado = False
         Ciudadano.solicitudesRechazadas = 0
-        return ("el ciudadano se ha desbloqueado")
+        return ("El ciudadano se ha desbloqueado")
 
 # pasarle un ciudadano y bloquearlo
     def bloquearCiudadano(self,Ciudadano):
         Ciudadano.estaBloqueado = True
-        return("el ciudadano se ha bloqueado")
+        return("El ciudadano se ha bloqueado")
 
 # los administradores puedan crear tipos de eventos
     def CrearTipoDeEvento(self,nuevoTipo):

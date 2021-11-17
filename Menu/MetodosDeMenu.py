@@ -1,5 +1,7 @@
 from Anses.Anses import leerCuilsDelAnses
 from Anses.Anses import leerDataEspecificaDeCiudadano
+from Anses.Anses import escribirCiudadano
+from GestionUsuarios.Ciudadano import Ciudadano
 
 
 def login():
@@ -10,6 +12,12 @@ def login():
     x=int(input("seleccione la opción: "))  #hay que hacer una value exception acá
     if x==1:
         ContieneCuilEnAnses()
+    elif x==2:
+        pass
+    elif x==3:
+        pass
+    elif x==4:
+        print("Gracias por usar el programa")
 def ContieneCuilEnAnses():
     cuil = str(input("Ingrese su numero de CUIL sin guion(debe ser de 11 digitos, EJ: 23440529259), en caso de querer volver atras ingrese el numero 0: "))
     if cuil == "0":
@@ -25,7 +33,7 @@ def ContieneCuilEnAnses():
             else:
                 posicionListaCuilsDelAnses = posicionListaCuilsDelAnses + 1
         if existeEnAnses == True:
-            yaExisteElUsuario()
+            yaExisteElUsuario(cuil)
         else:
             print("Su numero de Cuil no se encuentra en la lista del Anses, vuelva a escribirlo. En caso de seguir teniendo este problema comuniquese con el Anses.")
             ContieneCuilEnAnses()
@@ -60,9 +68,16 @@ def EstaRepetidoElCelular(cuil):
                 posicionListaCelularesDeUsersCreados = posicionListaCelularesDeUsersCreados + 1
         if estaDuplicado == True:
             print("El numero de telefono que ingresó se encuentra en uso por otro usuario, ingrese uno nuevo.")
-            EstaRepetidoElCelular()
+            EstaRepetidoElCelular(cuil)
         else:
-            pass
+            creadorDelUsuario(cuil,celular)
     else:
-        pass
-
+        print("el numero ingresado no tiene 10 digitos,ingreselo otra vez.")
+        EstaRepetidoElCelular(cuil)
+def creadorDelUsuario(cuil,celular):
+    intCUIL = int(cuil)
+    intCelular = int(celular)
+    CiudadanoACrear = Ciudadano(intCUIL,intCelular)
+    escribirCiudadano(CiudadanoACrear)
+    print("Se ha creado el usuario.")
+    login()

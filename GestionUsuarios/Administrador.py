@@ -1,5 +1,6 @@
 from GestionUsuarios.Ciudadano import Ciudadano
-
+from Anses.Anses import leerTiposDeEvento
+from Anses.Anses import escribirTipoDeEvento
 
 class Administrador():
 
@@ -29,7 +30,27 @@ class Administrador():
         Ciudadano.estaBloqueado = True
         return("El ciudadano se ha bloqueado")
 
-# los administradores puedan crear tipos de eventos
-    def CrearTipoDeEvento(self,nuevoTipo):
-        #esto va a tener que llamar a la persistencia para guardarse en una lista, como todavia no la hicimos no podemos avanzarlo
-        pass
+    def crearTipoDeEvento(self):
+        tipoNuevo=str(input("ingrese el evento en minuscula: "))
+        listaTiposEventos=[]
+        leerTiposDeEvento(listaTiposEventos)
+        indiceLista = 0
+        estariaRepetido = False
+        while indiceLista < len(listaTiposEventos):
+            if tipoNuevo == listaTiposEventos[indiceLista]:
+                estariaRepetido = True
+                indiceLista = indiceLista + len(listaTiposEventos)
+            else:
+                indiceLista = indiceLista + 1
+        if estariaRepetido == True:
+            print("Este tipo de evento ya fue creado previamente.")
+        else:
+            escribirTipoDeEvento(tipoNuevo)
+            print("se ha guardado el tipo de evento")
+
+
+
+
+
+
+

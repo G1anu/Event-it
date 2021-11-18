@@ -1,8 +1,8 @@
 from GestionUsuarios import Administrador
 class ABM():
 
-    def crearAdministrador(self,nuevoUsuario, nuevaContraseña,accesoAABM):
-        newAdmin = Administrador(nuevoUsuario,nuevaContraseña,accesoAABM)
+    def crearAdministrador(self,nuevoUsuario, nuevaContrasena,accesoAABM):
+        newAdmin = Administrador(nuevoUsuario,nuevaContrasena,accesoAABM)
         return newAdmin
 
     def eliminarAdministrador(self):

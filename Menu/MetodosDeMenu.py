@@ -132,7 +132,7 @@ def crearObjetoAdminEnRuntime(username,contrasena,posicionDelNombre):
         ABM = False
     AdminEnRuntime = Administrador(username,contrasena,ABM)
     menuAdmin(AdminEnRuntime)
-def menuAdmin(Admin):
+def menuAdmin(AdminEnRuntime):
     print("¿Que desea hacer?")
     print("1-Agregar tipo de evento")
     print("2-Bloquear usuario")
@@ -140,3 +140,33 @@ def menuAdmin(Admin):
     print("4-Crear administrador")
     print("5-Modificar administrador")
     print("6-Eliminar administrador")
+    print("7-Salir del programa")
+    x=int(input("seleccione la opción: ")) #hay que hacer una value exception acá
+    if x == 1:  #hay que hacer una valueexception acá
+        AdminEnRuntime.crearTipoDeEvento()
+        menuAdmin(AdminEnRuntime)
+    elif x == 2:
+        pass
+    elif x == 3:
+        pass
+    elif x == 4:
+        if AdminEnRuntime.accesoAABM == True:
+            pass
+        else:
+            print("No se encuentra autorizado para hacer esa operación")
+            menuAdmin(AdminEnRuntime)
+    elif x == 5:
+        if AdminEnRuntime.accesoAABM == True:
+            pass
+        else:
+            print("No se encuentra autorizado para hacer esa operación")
+            menuAdmin(AdminEnRuntime)
+    elif x == 6:
+        if AdminEnRuntime.accesoAABM == True:
+            pass
+        else:
+            print("No se encuentra autorizado para hacer esa operación")
+            menuAdmin(AdminEnRuntime)
+    elif x == 7:
+        print("Se ha cerrado la sesión correctamente.")
+

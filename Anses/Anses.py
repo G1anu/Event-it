@@ -22,14 +22,24 @@ def leerDataEspecificaDeCiudadano(listaUsuarios,valorABuscar):
 
 def leerCuilsDelAnses(listaCuils):
     with open("../Archivos/CUIL.csv","r") as ansesCUILs:
-        csv_CUILs_reader = csv.reader((ansesCUILs))
+        csv_CUILs_reader = csv.reader(ansesCUILs)
         next(ansesCUILs)
         for line in csv_CUILs_reader:
             listaCuils.append(line[0])
 
+def escribirTipoDeEvento(tipoDeEvento):
+    with open("../Archivos/tiposDeEventos.csv","a",newline="") as listaTipos:
+        csv_event_tipe_writer = csv.writer(listaTipos,delimiter=",")
+        csv_event_tipe_writer.writerow([tipoDeEvento])
 def leerDataEspecificaDeAdmin(listaAdmin,valorABuscar):
     with open("../Archivos/listaAdministradores.csv","r") as listaAdministradores:
         csv_admin_reader=csv.reader(listaAdministradores)
         next(listaAdministradores)
         for line in csv_admin_reader:
             listaAdmin.append(line[valorABuscar])
+def leerTiposDeEvento(listaTiposEventos):
+    with open("../Archivos/tiposDeEventos.csv","r") as tiposDeEventos:
+        csv_event_tipe_reader = csv.reader(tiposDeEventos)
+        next(tiposDeEventos)
+        for line in csv_event_tipe_reader:
+            listaTiposEventos.append(line[0])

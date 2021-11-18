@@ -273,5 +273,18 @@ def menuCitizen(ciudadanoEnRuntime):
             menuCitizen(ciudadanoEnRuntime)
         else:
             pass
+    if x == 2:
+        pass
+    if x==3:
+        if ciudadanoEnRuntime.estaBloqueado == True:
+            print("Actualmente se encuentra bloqueado, comuniquese con un administrador.")
+            menuCitizen(ciudadanoEnRuntime)
+        else:
+            pass
+    if x == 4:
+        print("Se ha cerrado la sesión correctamente.")
+    else:
+        print("opción invalida, seleccione otra vez.")
+        menuCitizen(ciudadanoEnRuntime)
 
 

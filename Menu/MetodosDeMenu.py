@@ -4,6 +4,7 @@ from Anses.Anses import escribirCiudadano
 from Anses.Anses import leerDataEspecificaDeAdmin
 from GestionUsuarios.Ciudadano import Ciudadano
 from GestionUsuarios.Administrador import Administrador
+from GestionUsuarios.ABM import crearAdministrador
 
 
 def login():
@@ -151,7 +152,9 @@ def menuAdmin(AdminEnRuntime):
         pass
     elif x == 4:
         if AdminEnRuntime.accesoAABM == True:
-            pass
+            checkerInexistenciaDelUsername()
+
+            crearAdministrador()
         else:
             print("No se encuentra autorizado para hacer esa operación")
             menuAdmin(AdminEnRuntime)
@@ -169,4 +172,21 @@ def menuAdmin(AdminEnRuntime):
             menuAdmin(AdminEnRuntime)
     elif x == 7:
         print("Se ha cerrado la sesión correctamente.")
+def checkerInexistenciaDelUsername(AdminEnRuntime):
+    username = str(input("Ingrese el nombre de usuario: "))
+    ListaNombresDeAdmins = []
+    leerDataEspecificaDeAdmin(ListaNombresDeAdmins, 0)
+    existeElUsuario = False
+    indiceDeLista = 0
+    while indiceDeLista < len(ListaNombresDeAdmins):
+        if username == ListaNombresDeAdmins[indiceDeLista]:
+            existeElUsuario = True
+            indiceDeLista = indiceDeLista + len(ListaNombresDeAdmins)
+        else:
+            indiceDeLista = indiceDeLista + 1
+    if existeElUsuario == True:
+            print("Ya existe un admin con ese nombre")
+
+        else:
+            print("Este username no existe, escriba otro.")
 

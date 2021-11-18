@@ -1,4 +1,4 @@
-import GestionEventos.Evento
+from GestionEventos.Evento import Evento
 from GestionEventos.Solicitud import Solicitud
 
 
@@ -16,7 +16,7 @@ class Ciudadano():
             return 0
 
     def crearEvento(self,newDate,tipo_de_evento,cantidad_de_personas,cantidad_maxima_de_personas,localidad):
-        newEvento = GestionEventos.Evento(newDate,tipo_de_evento,cantidad_de_personas,cantidad_maxima_de_personas,localidad)
+        newEvento = Evento(newDate,tipo_de_evento,cantidad_de_personas,cantidad_maxima_de_personas,localidad)
         return newEvento
 
     def ciudadanoAEscribir(self):

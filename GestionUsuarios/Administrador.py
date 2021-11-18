@@ -1,11 +1,11 @@
-from Ciudadano import Ciudadano
+from GestionUsuarios.Ciudadano import Ciudadano
 
 
 class Administrador():
 
-    def __init__(self, usuario, contraseña, accesoAABM):
+    def __init__(self, usuario, contrasena, accesoAABM):
         self.usuario = usuario
-        self.contraseña = contraseña
+        self.contrasena = contrasena
         self.accesoAABM = accesoAABM
 
     def booleanNumericoAccesoAABM(self):
@@ -14,14 +14,9 @@ class Administrador():
         else:
             return 0
 
-    def administradorString(self):
-        return (str(self.usuario) + "," + str(self.contraseña) + "," + str(self.booleanNumericoAccesoAABM()))
+    def adminAEscribir(self):
+        return [str(self.usuario),str(self.contrasena),self.booleanNumericoAccesoAABM()]
 
-    def getUsuario(self):
-        return self.usuario
-
-    def getContraseña(self):
-        return self.contraseña
 
 # pasarle un ciudadano y desbloquearlo
     def desbloquearCiudadano(self,Ciudadano):

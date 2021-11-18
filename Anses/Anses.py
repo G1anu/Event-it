@@ -19,6 +19,7 @@ def leerDataEspecificaDeCiudadano(listaUsuarios,valorABuscar):
         next(listaCiudadanos)
         for line in csv_User_Reader:
             listaUsuarios.append(line[valorABuscar])
+
 def leerCuilsDelAnses(listaCuils):
     with open("../Archivos/CUIL.csv","r") as ansesCUILs:
         csv_CUILs_reader = csv.reader((ansesCUILs))
@@ -26,6 +27,9 @@ def leerCuilsDelAnses(listaCuils):
         for line in csv_CUILs_reader:
             listaCuils.append(line[0])
 
-
-
-
+def leerDataEspecificaDeAdmin(listaAdmin,valorABuscar):
+    with open("../Archivos/listaAdministradores.csv","r") as listaAdministradores:
+        csv_admin_reader=csv.reader(listaAdministradores)
+        next(listaAdministradores)
+        for line in csv_admin_reader:
+            listaAdmin.append(line[valorABuscar])

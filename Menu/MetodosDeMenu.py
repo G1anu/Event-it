@@ -1,7 +1,7 @@
 from Anses.Anses import leerCuilsDelAnses, leerCiudadano, leerDataEspecificaDeCiudadano, escribirCiudadano, leerDataEspecificaDeAdmin, escribirAdministrador
 from GestionUsuarios.Ciudadano import Ciudadano
 from GestionUsuarios.Administrador import Administrador
-from GestionUsuarios.ABM import crearAdministrador
+from GestionUsuarios.ABM import crearAdministrador, eliminarAdministrador
 
 
 def login():
@@ -163,14 +163,12 @@ def menuAdmin(AdminEnRuntime):
             print("No se encuentra autorizado para hacer esa operación")
             menuAdmin(AdminEnRuntime)
     elif x == 5:
-        if AdminEnRuntime.accesoAABM == True:
-            pass
-        else:
-            print("No se encuentra autorizado para hacer esa operación")
-            menuAdmin(AdminEnRuntime)
+        menuDeModificacion(AdminEnRuntime)
     elif x == 6:
         if AdminEnRuntime.accesoAABM == True:
-            pass
+            usuarioAEliminar = checkAdminNameToDelete(AdminEnRuntime)
+            eliminarAdministrador(usuarioAEliminar)
+
         else:
             print("No se encuentra autorizado para hacer esa operación")
             menuAdmin(AdminEnRuntime)
@@ -213,6 +211,28 @@ def selectorDeABM(AdminEnRuntime):
         return True
     else:
         return False
+def checkAdminNameToDelete(AdminEnRuntime):
+    username = str(input("escriba el nombre del Admin que desea eliminar: "))
+    listaNombre = []
+    leerDataEspecificaDeAdmin(listaNombre,0)
+    indiceLista = 0
+    existeElUser = False
+    while indiceLista < len(listaNombre):
+        if username == listaNombre[indiceLista]:
+            existeElUser = True
+            indiceLista = indiceLista + len(listaNombre)
+        else:
+            indiceLista = indiceLista + 1
+    if existeElUser == True:
+        return username
+    else:
+        print("Este administrador no existe.")
+        menuAdmin(AdminEnRuntime)
+def menuDeModificacion(AdminEnRuntime):
+    print("1-Modificar el username.")
+    print("2-Modificar la contaseña.")
+    y = input("seleccione la opción,seleccione 0 para volver atrás: ")
+    if ==
 
 def EstaElUsernameCiudadano():
     cuilCiudadano=str(input("Ingrese su CUIL correspondiente(EJ:42382331653), en caso de querer volver atras ingrese el numero 0: "))

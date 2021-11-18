@@ -45,8 +45,26 @@ def leerDataEspecificaDeAdmin(listaAdmin,valorABuscar):
         next(listaAdministradores)
         for line in csv_admin_reader:
             listaAdmin.append(line[valorABuscar])
+def leerAdministradores(lista):
+    with open("../Archivos/listaAdministradores.csv","r") as listaAdmin:
+        csv_Admin_reader = csv.reader(listaAdmin)
+        next(listaAdmin)
+        for line in csv_Admin_reader:
+            lista.append(line)
 def escribirAdministrador(admin):
     AdminParaEscribir=admin.adminAEscribir()
     with open("../Archivos/listaAdministradores.csv","a",newline="") as listaAdmin:
         csv_Admin_writer = csv.writer(listaAdmin,delimiter=",")
         csv_Admin_writer.writerow(AdminParaEscribir)
+def adminCleaner():
+    cleaner = open("../Archivos/listaAdministradores.csv","w")
+    cleaner.close()
+def adminListPlacerAfterClean(lista):
+    with open("../Archivos/listaAdministradores.csv","a",newline="")as listaAdmin:
+        csv_Admin_writer = csv.writer(listaAdmin,delimiter=",")
+        csv_Admin_writer.writerow(["username","contraseña","esABM"])
+        indice = 0
+        while indice < len(lista):
+            csv_Admin_writer.writerow(lista[indice])
+            indice = indice + 1
+

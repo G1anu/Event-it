@@ -3,11 +3,11 @@ from GestionEventos.Solicitud import Solicitud
 
 
 class Ciudadano():
-    def __init__(self,CUIL,telefono):
+    def __init__(self,CUIL,telefono,solicitudesRechazadas,estaBloqueado):
         self.CUIL = CUIL
         self.telefono = telefono
-        self.solicitudesRechazadas = 0
-        self.estaBloqueado = False
+        self.solicitudesRechazadas = solicitudesRechazadas
+        self.estaBloqueado = estaBloqueado
 
     def booleanNumericoEstaBloqueado(self):
         if self.estaBloqueado == True:

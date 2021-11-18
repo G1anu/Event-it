@@ -1,7 +1,7 @@
 from GestionUsuarios import Administrador
 
-def crearAdministrador(nuevoUsuario, nuevaContrasena,accesoAABM):
-    newAdmin = Administrador(nuevoUsuario,nuevaContrasena,accesoAABM)
+def crearAdministrador(nuevoUsuario, nuevaContrasena, accesoAABM):
+    newAdmin = Administrador.Administrador(nuevoUsuario, nuevaContrasena, accesoAABM)
     return newAdmin
 
 def eliminarAdministrador(self):

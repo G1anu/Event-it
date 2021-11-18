@@ -2,11 +2,12 @@ import csv
 from GestionEventos.Evento import Evento
 from GestionUsuarios.Ciudadano import Ciudadano
 
+
 def escribirCiudadano(ciudadano):
-    CiudadanoAEscribir=ciudadano.ciudadanoAEscribir()
+    CiudadanoParaEscribir=ciudadano.ciudadanoAEscribir()
     with open("../Archivos/listaUsuarios.csv","a",newline="") as listaCiudadanos:
         csv_User_writer = csv.writer(listaCiudadanos,delimiter=",")
-        csv_User_writer.writerow(CiudadanoAEscribir)
+        csv_User_writer.writerow(CiudadanoParaEscribir)
 def leerCiudadano(listaUsuarios):
     with open("../Archivos/listaUsuarios.csv","r") as listaCiudadanos:
         csv_User_Reader=csv.reader(listaCiudadanos)
@@ -31,15 +32,21 @@ def escribirTipoDeEvento(tipoDeEvento):
     with open("../Archivos/tiposDeEventos.csv","a",newline="") as listaTipos:
         csv_event_tipe_writer = csv.writer(listaTipos,delimiter=",")
         csv_event_tipe_writer.writerow([tipoDeEvento])
-def leerDataEspecificaDeAdmin(listaAdmin,valorABuscar):
-    with open("../Archivos/listaAdministradores.csv","r") as listaAdministradores:
-        csv_admin_reader=csv.reader(listaAdministradores)
-        next(listaAdministradores)
-        for line in csv_admin_reader:
-            listaAdmin.append(line[valorABuscar])
 def leerTiposDeEvento(listaTiposEventos):
     with open("../Archivos/tiposDeEventos.csv","r") as tiposDeEventos:
         csv_event_tipe_reader = csv.reader(tiposDeEventos)
         next(tiposDeEventos)
         for line in csv_event_tipe_reader:
             listaTiposEventos.append(line[0])
+
+def leerDataEspecificaDeAdmin(listaAdmin,valorABuscar):
+    with open("../Archivos/listaAdministradores.csv","r") as listaAdministradores:
+        csv_admin_reader=csv.reader(listaAdministradores)
+        next(listaAdministradores)
+        for line in csv_admin_reader:
+            listaAdmin.append(line[valorABuscar])
+def escribirAdministrador(admin):
+    AdminParaEscribir=admin.adminAEscribir()
+    with open("../Archivos/listaAdministradores.csv","a",newline="") as listaAdmin:
+        csv_Admin_writer = csv.writer(listaAdmin,delimiter=",")
+        csv_Admin_writer.writerow(AdminParaEscribir)

@@ -187,6 +187,6 @@ def checkerInexistenciaDelUsername(AdminEnRuntime):
     if existeElUsuario == True:
             print("Ya existe un admin con ese nombre")
 
-        else:
-            print("Este username no existe, escriba otro.")
+    else:
+        print("Este username no existe, escriba otro.")
 

@@ -4,32 +4,23 @@ from GestionUsuarios.Administrador import Administrador
 from GestionUsuarios.ABM import crearAdministrador
 
 
-
 def login():
     print("1- Registrarse")
     print("2- Iniciar sesion como administrador")
     print("3- Iniciar sesion como usuario")
     print("4- Salir del programa")
-    try:
-
-        x=int(input("seleccione la opción: "))  #hay que hacer una value exception acá
-
-        if x==1:
-            ContieneCuilEnAnses()
-        elif x==2:
-            EstaElUsernameAdmin()
-        elif x==3:
-            EstaElUsernameCiudadano()
-        elif x==4:
-            print("Gracias por usar el programa")
-        else:
-            print("opción invalida, seleccione otra vez")
-            login()
-    except ValueError:
-        print("Valor incorrecto, utilice un numero")
+    x=int(input("seleccione la opción: "))  #hay que hacer una value exception acá
+    if x==1:
+        ContieneCuilEnAnses()
+    elif x==2:
+        EstaElUsernameAdmin()
+    elif x==3:
+        EstaElUsernameCiudadano()
+    elif x==4:
+        print("Gracias por usar el programa")
+    else:
+        print("opción invalida, seleccione otra vez")
         login()
-
-
 def ContieneCuilEnAnses():
     cuil = str(input("Ingrese su numero de CUIL sin guion(debe ser de 11 digitos, EJ: 23440529259), en caso de querer volver atras ingrese el numero 0: "))
     if cuil == "0":
@@ -142,7 +133,6 @@ def crearObjetoAdminEnRuntime(username,contrasena,posicionDelNombre):
         ABM = False
     AdminEnRuntime = Administrador(username,contrasena,ABM)
     menuAdmin(AdminEnRuntime)
-
 def menuAdmin(AdminEnRuntime):
     print("¿Que desea hacer?")
     print("1-Agregar tipo de evento")
@@ -152,48 +142,43 @@ def menuAdmin(AdminEnRuntime):
     print("5-Modificar administrador")
     print("6-Eliminar administrador")
     print("7-Salir del programa")
-    try:
-        x=int(input("seleccione la opción: ")) #hay que hacer una value exception acá
-        if x == 1:
-            AdminEnRuntime.crearTipoDeEvento()
-            menuAdmin(AdminEnRuntime)
-        elif x == 2:
-            pass
-        elif x == 3:
-            pass
-        elif x == 4:
-            if AdminEnRuntime.accesoAABM == True:
-                usuario = checkerInexistenciaDelUsername(AdminEnRuntime)
-                newcontrasena = creadorDeContrasena(AdminEnRuntime)
-                ABM = selectorDeABM(AdminEnRuntime)
-                AdminACrear = crearAdministrador(usuario,newcontrasena,ABM)
-                escribirAdministrador(AdminACrear)
-                print("se ha creado el administrador nuevo")
-                menuAdmin(AdminEnRuntime)
-            else:
-                print("No se encuentra autorizado para hacer esa operación")
-                menuAdmin(AdminEnRuntime)
-        elif x == 5:
-            if AdminEnRuntime.accesoAABM == True:
-                pass
-            else:
-                print("No se encuentra autorizado para hacer esa operación")
-                menuAdmin(AdminEnRuntime)
-        elif x == 6:
-            if AdminEnRuntime.accesoAABM == True:
-                pass
-            else:
-                print("No se encuentra autorizado para hacer esa operación")
-                menuAdmin(AdminEnRuntime)
-        elif x == 7:
-            print("Se ha cerrado la sesión correctamente.")
-        else:
-            print("opción invalida, seleccione otra vez")
-            menuAdmin(AdminEnRuntime)
-    except ValueError:
-        print("Valor incorrecto, utilice un numero")
+    x=int(input("seleccione la opción: ")) #hay que hacer una value exception acá
+    if x == 1:
+        AdminEnRuntime.crearTipoDeEvento()
         menuAdmin(AdminEnRuntime)
-
+    elif x == 2:
+        pass
+    elif x == 3:
+        pass
+    elif x == 4:
+        if AdminEnRuntime.accesoAABM == True:
+            usuario = checkerInexistenciaDelUsername(AdminEnRuntime)
+            newcontrasena = creadorDeContrasena(AdminEnRuntime)
+            ABM = selectorDeABM(AdminEnRuntime)
+            AdminACrear = crearAdministrador(usuario,newcontrasena,ABM)
+            escribirAdministrador(AdminACrear)
+            print("se ha creado el administrador nuevo")
+            menuAdmin(AdminEnRuntime)
+        else:
+            print("No se encuentra autorizado para hacer esa operación")
+            menuAdmin(AdminEnRuntime)
+    elif x == 5:
+        if AdminEnRuntime.accesoAABM == True:
+            pass
+        else:
+            print("No se encuentra autorizado para hacer esa operación")
+            menuAdmin(AdminEnRuntime)
+    elif x == 6:
+        if AdminEnRuntime.accesoAABM == True:
+            pass
+        else:
+            print("No se encuentra autorizado para hacer esa operación")
+            menuAdmin(AdminEnRuntime)
+    elif x == 7:
+        print("Se ha cerrado la sesión correctamente.")
+    else:
+        print("opción invalida, seleccione otra vez")
+        menuAdmin(AdminEnRuntime)
 def checkerInexistenciaDelUsername(AdminEnRuntime):
     username = str(input("Ingrese el nombre de usuario, escriba 0 si desea volver atras: "))
     if username == "0":
@@ -263,7 +248,6 @@ def checkearCelular(cuil,posicionDelCuil):
         else:
             print("el numero de telefono es incorrecto, escribalo otra vez")
             checkearCelular(cuil, posicionDelCuil)
-
 def crearCiudadanoEnRuntime(cuil,celular,posicionDelCuil):
     listaSolicitudesRechazadas = []
     leerDataEspecificaDeCiudadano(listaSolicitudesRechazadas,2)
@@ -277,35 +261,30 @@ def crearCiudadanoEnRuntime(cuil,celular,posicionDelCuil):
         bloqueoBOOLEAN = False
     ciudadanoEnRuntime = Ciudadano(cuil,posicionDelCuil,solicitudesR,bloqueoBOOLEAN)
     menuCitizen(ciudadanoEnRuntime)
-
 def menuCitizen(ciudadanoEnRuntime):
     print("1-Crear Evento")
     print("2-Ver invitaciones")
     print("3-Enviar invitación")
     print("4-salir del programa")
-    try:
-        x = int(input("seleccione la opción:")) #aca hay que hacer una value exception
-
-        if x == 1:
-            if ciudadanoEnRuntime.estaBloqueado == True:
-                print("Actualmente se encuentra bloqueado, comuniquese con un administrador.")
-                menuCitizen(ciudadanoEnRuntime)
-            else:
-                pass
-        if x == 2:
-            pass
-        if x==3:
-            if ciudadanoEnRuntime.estaBloqueado == True:
-                print("Actualmente se encuentra bloqueado, comuniquese con un administrador.")
-                menuCitizen(ciudadanoEnRuntime)
-            else:
-                pass
-        if x == 4:
-            print("Se ha cerrado la sesión correctamente.")
-        else:
-            print("opción invalida, seleccione otra vez.")
+    x = int(input("seleccione la opción:")) #aca hay que hacer una value exception
+    if x == 1:
+        if ciudadanoEnRuntime.estaBloqueado == True:
+            print("Actualmente se encuentra bloqueado, comuniquese con un administrador.")
             menuCitizen(ciudadanoEnRuntime)
-    except ValueError:
-        print("Valor incorrecto, utilice un numero")
+        else:
+            pass
+    if x == 2:
+        pass
+    if x==3:
+        if ciudadanoEnRuntime.estaBloqueado == True:
+            print("Actualmente se encuentra bloqueado, comuniquese con un administrador.")
+            menuCitizen(ciudadanoEnRuntime)
+        else:
+            pass
+    if x == 4:
+        print("Se ha cerrado la sesión correctamente.")
+    else:
+        print("opción invalida, seleccione otra vez.")
         menuCitizen(ciudadanoEnRuntime)
+
 

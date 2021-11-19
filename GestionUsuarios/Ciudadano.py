@@ -15,8 +15,9 @@ class Ciudadano():
         else:
             return 0
 
-    def crearEvento(self,newDate,tipo_de_evento,cantidad_de_personas,cantidad_maxima_de_personas,localidad):
-        newEvento = Evento(newDate,tipo_de_evento,cantidad_de_personas,cantidad_maxima_de_personas,localidad)
+    def crearEvento(self,nombre,ano,mes,dia,hora,minuto,tipo_de_evento,cantidad_maxima_de_personas,vectorX,vectorY):
+        newEvento = Evento(nombre,ano,mes,dia,hora,minuto,tipo_de_evento,cantidad_maxima_de_personas,vectorX,vectorY)
+
         return newEvento
 
     def ciudadanoAEscribir(self):

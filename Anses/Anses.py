@@ -4,7 +4,7 @@ from GestionUsuarios.Ciudadano import Ciudadano
 
 
 def escribirCiudadano(ciudadano):
-    CiudadanoParaEscribir=ciudadano.ciudadanoAEscribir()
+    CiudadanoParaEscribir = ciudadano.ciudadanoAEscribir()
     with open("../Archivos/listaUsuarios.csv","a",newline="") as listaCiudadanos:
         csv_User_writer = csv.writer(listaCiudadanos,delimiter=",")
         csv_User_writer.writerow(CiudadanoParaEscribir)
@@ -38,6 +38,23 @@ def leerTiposDeEvento(listaTiposEventos):
         next(tiposDeEventos)
         for line in csv_event_tipe_reader:
             listaTiposEventos.append(line[0])
+def escribirEvento(newEvento):
+    EventoParaEscribir = newEvento.eventoAEscribir()
+    with open("../Archivos/ListaEventos.csv","a",newline="") as listaEventos:
+        csv_Event_writer = csv.writer(listaEventos,delimiter=",")
+        csv_Event_writer.writerow(EventoParaEscribir)
+def leerDataEspecificaEventoparaMapa(lista,valorABuscar):
+    with open("../Archivos/ListaEventos.csv","r") as listaEventos:
+        csv_Event_reader=csv.reader(listaEventos)
+        next(listaEventos)
+        for line in csv_Event_reader:
+            lista.append(float(line[valorABuscar]))
+def leerDataEspecificaEvento(lista,valorABuscar):
+    with open("../Archivos/ListaEventos.csv","r") as listaEventos:
+        csv_Event_reader=csv.reader(listaEventos)
+        next(listaEventos)
+        for line in csv_Event_reader:
+            lista.append(line[valorABuscar])
 
 def leerDataEspecificaDeAdmin(listaAdmin,valorABuscar):
     with open("../Archivos/listaAdministradores.csv","r") as listaAdministradores:

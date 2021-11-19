@@ -1,7 +1,7 @@
 from Anses.Anses import leerCuilsDelAnses, leerCiudadano, leerDataEspecificaDeCiudadano, escribirCiudadano, leerDataEspecificaDeAdmin, escribirAdministrador
 from GestionUsuarios.Ciudadano import Ciudadano
 from GestionUsuarios.Administrador import Administrador
-from GestionUsuarios.ABM import crearAdministrador
+from GestionUsuarios.ABM import crearAdministrador, eliminarAdministrador, modificarUsernameAdministrador, modificarContrasenaDeAdmin
 
 
 def login():
@@ -163,14 +163,13 @@ def menuAdmin(AdminEnRuntime):
             print("No se encuentra autorizado para hacer esa operación")
             menuAdmin(AdminEnRuntime)
     elif x == 5:
-        if AdminEnRuntime.accesoAABM == True:
-            pass
-        else:
-            print("No se encuentra autorizado para hacer esa operación")
-            menuAdmin(AdminEnRuntime)
+        menuDeModificacion(AdminEnRuntime)
+
     elif x == 6:
         if AdminEnRuntime.accesoAABM == True:
-            pass
+            usuarioAEliminar = checkAdminName(AdminEnRuntime)
+            eliminarAdministrador(usuarioAEliminar)
+            menuAdmin(AdminEnRuntime)
         else:
             print("No se encuentra autorizado para hacer esa operación")
             menuAdmin(AdminEnRuntime)
@@ -213,6 +212,88 @@ def selectorDeABM(AdminEnRuntime):
         return True
     else:
         return False
+def checkAdminName(AdminEnRuntime):
+    username = str(input("escriba el nombre de usuario del Admin: "))
+    listaNombre = []
+    leerDataEspecificaDeAdmin(listaNombre,0)
+    indiceLista = 0
+    existeElUser = False
+    while indiceLista < len(listaNombre):
+        if username == listaNombre[indiceLista]:
+            existeElUser = True
+            indiceLista = indiceLista + len(listaNombre)
+        else:
+            indiceLista = indiceLista + 1
+    if existeElUser == True:
+        return username
+    else:
+        print("No existe este username de administrador")
+        menuAdmin(AdminEnRuntime)
+def checkAdminNametoModify(AdminEnRuntime):
+    username = str(input("escriba el nombre de usuario del Admin: "))
+    if username == AdminEnRuntime.usuario:
+        listaNombre = []
+        leerDataEspecificaDeAdmin(listaNombre,0)
+        indiceLista = 0
+        existeElUser = False
+        while indiceLista < len(listaNombre):
+            if username == listaNombre[indiceLista]:
+                existeElUser = True
+                indiceLista = indiceLista + len(listaNombre)
+            else:
+                indiceLista = indiceLista + 1
+        if existeElUser == True:
+            return username
+        else:
+            print("No existe este username de administrador")
+            menuAdmin(AdminEnRuntime)
+    else:
+        print("ese no es tu username")
+        menuDeModificacion(AdminEnRuntime)
+def checkAdminPassword(AdminEnRuntime):
+    contrasena=str(input("escriba su contraseña: "))
+    if contrasena == AdminEnRuntime.contrasena:
+        listaContrasena = []
+        leerDataEspecificaDeAdmin(listaContrasena,1)
+        indiceLista = 0
+        existeLaContra = False
+        while indiceLista < len(listaContrasena):
+            if contrasena == listaContrasena[indiceLista]:
+                existeLaContra = True
+                indiceLista = indiceLista + len(listaContrasena)
+            else:
+                indiceLista = indiceLista + 1
+        if existeLaContra == True:
+            return contrasena
+        else:
+            print("no existe esa contrasena")
+            menuAdmin(AdminEnRuntime)
+    else:
+        print("no escribiste tu contraseña")
+        menuDeModificacion(AdminEnRuntime)
+
+def menuDeModificacion(AdminEnRuntime):
+    print("1-Modificar el username.")
+    print("2-Modificar la contraseña.")
+    y = str(input("seleccione la opción,seleccione 0 para volver atrás: "))
+    if y == "0":
+        menuAdmin(AdminEnRuntime)
+    elif y == "1":
+        UsernameViejo = checkAdminNametoModify(AdminEnRuntime)
+        modificarUsernameAdministrador(UsernameViejo)
+        menuAdmin(AdminEnRuntime)
+    elif y == "2":
+        contrasena = checkAdminPassword(AdminEnRuntime)
+        modificarContrasenaDeAdmin(contrasena)
+        menuAdmin(AdminEnRuntime)
+    else:
+        print("opción invalida, vuelva a escribirlo.")
+        menuDeModificacion(AdminEnRuntime)
+
+
+
+
+
 
 def EstaElUsernameCiudadano():
     cuilCiudadano=str(input("Ingrese su CUIL correspondiente(EJ:42382331653), en caso de querer volver atras ingrese el numero 0: "))
@@ -265,7 +346,9 @@ def menuCitizen(ciudadanoEnRuntime):
     print("1-Crear Evento")
     print("2-Ver invitaciones")
     print("3-Enviar invitación")
-    print("4-salir del programa")
+    print("4-Ver mapa")
+    print("5-Ver tipos de eventos mas recurridos")
+    print("5-salir del programa")
     x = int(input("seleccione la opción:")) #aca hay que hacer una value exception
     if x == 1:
         if ciudadanoEnRuntime.estaBloqueado == True:
@@ -273,15 +356,17 @@ def menuCitizen(ciudadanoEnRuntime):
             menuCitizen(ciudadanoEnRuntime)
         else:
             pass
-    if x == 2:
+    elif x == 2:
         pass
-    if x==3:
+    elif x==3:
         if ciudadanoEnRuntime.estaBloqueado == True:
             print("Actualmente se encuentra bloqueado, comuniquese con un administrador.")
             menuCitizen(ciudadanoEnRuntime)
         else:
             pass
-    if x == 4:
+    elif x ==4:
+
+    elif x == 5:
         print("Se ha cerrado la sesión correctamente.")
     else:
         print("opción invalida, seleccione otra vez.")

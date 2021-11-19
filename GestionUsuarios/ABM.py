@@ -23,5 +23,13 @@ def eliminarAdministrador(usuarioAeliminar):
     adminListPlacerAfterClean(listaAdmins)
     print("Se elimino el usuario " + usuarioAeliminar + ".")
 # "Se le pasa un usuario de Administrador y se le modifica la contraseña y se guarda en el archivo de texto listaAdministradores"
-def modificarAdministrador():
-    pass
+def modificarUsernameAdministrador(usernameViejo):
+    usernameNuevo = str(input("Ingrese su nuevo nombre de usuario, no puede ser 0: "))
+    if usernameNuevo == "0":
+        print("Escribiste 0, el cual es un username invalido")
+        modificarUsernameAdministrador(usernameViejo)
+    else:
+        listaUser
+
+
+

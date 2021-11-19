@@ -8,28 +8,21 @@ class Ciudadano():
         self.telefono = telefono
         self.solicitudesRechazadas = solicitudesRechazadas
         self.estaBloqueado = estaBloqueado
-
     def booleanNumericoEstaBloqueado(self):
         if self.estaBloqueado == True:
             return 1
         else:
             return 0
-
     def crearEvento(self,nombre,ano,mes,dia,hora,minuto,tipo_de_evento,cantidad_maxima_de_personas,vectorX,vectorY):
         newEvento = Evento(nombre,ano,mes,dia,hora,minuto,tipo_de_evento,cantidad_maxima_de_personas,vectorX,vectorY)
-
         return newEvento
-
     def ciudadanoAEscribir(self):
         return [str(self.CUIL) , str(self.telefono), str(self.solicitudesRechazadas) , str(self.booleanNumericoEstaBloqueado())]
-
     #(str(self.CUIL) + "," + str(self.telefono) + "," + str(self.solicitudesRechazadas) + "," + str(self.booleanNumericoEstaBloqueado()))
     def aceptarSolicitud(self):
         pass
-
     def rechazarSolicitud(self):
         pass
-
     def enviarSolicitud(self, Ciudadano, CUILAEnviar, evento):
         if self.estaBloqueado == True:
             return "Estas bloqueado, contactate con un administrador para ser desbloqueado."

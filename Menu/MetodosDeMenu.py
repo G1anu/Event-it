@@ -155,9 +155,13 @@ def menuAdmin(AdminEnRuntime):
             AdminEnRuntime.crearTipoDeEvento()
             menuAdmin(AdminEnRuntime)
         elif x == 2:
-            pass
+            citizenAModificarEstado = generadorDeCitizenParaBloqueoODesbloqueo(AdminEnRuntime)
+            AdminEnRuntime.bloquearCiudadano(citizenAModificarEstado)
+            menuAdmin(AdminEnRuntime)
+
+            menuAdmin(AdminEnRuntime)
         elif x == 3:
-            pass
+            menuAdmin(AdminEnRuntime)
         elif x == 4:
             if AdminEnRuntime.accesoAABM == True:
                 usuario = checkerInexistenciaDelUsername(AdminEnRuntime)
@@ -182,6 +186,7 @@ def menuAdmin(AdminEnRuntime):
                 menuAdmin(AdminEnRuntime)
         elif x == 7:
             print("Se ha cerrado la sesión correctamente.")
+            login()
         else:
             print("opción invalida, seleccione otra vez")
             menuAdmin(AdminEnRuntime)
@@ -298,8 +303,41 @@ def menuDeModificacion(AdminEnRuntime):
     else:
         print("opción invalida, vuelva a escribirlo.")
         menuDeModificacion(AdminEnRuntime)
-def generadorDeCitizen(AdminEnRuntime):
-
+def generadorDeCitizenParaBloqueoODesbloqueo(AdminEnRuntime):
+    cuilUser=str(input("Escriba el cuil del usuario: "))
+    listaUsernames=[]
+    leerDataEspecificaDeCiudadano(listaUsernames, 0)
+    indiceLista=0
+    valorABuscar =-1
+    existeElUsername = False
+    while indiceLista < len(listaUsernames):
+        if cuilUser == listaUsernames[indiceLista]:
+            valorABuscar = indiceLista
+            existeElUsername = True
+            indiceLista = indiceLista + len(listaUsernames)
+        else:
+            indiceLista = indiceLista + 1
+    if existeElUsername == True:
+        cuilUserINT = int(cuilUser)
+        listaTelefonos = []
+        leerDataEspecificaDeCiudadano(listaTelefonos,1)
+        telefono = int(listaTelefonos[valorABuscar])
+        listaSoliRechazada = []
+        leerDataEspecificaDeCiudadano(listaSoliRechazada,2)
+        soliRechazada = int(listaSoliRechazada[valorABuscar])
+        listaBoolNumerico = []
+        leerDataEspecificaDeCiudadano(listaBoolNumerico,3)
+        boolNumerico = int(listaBoolNumerico[valorABuscar])
+        if boolNumerico == 1:
+            boolean = True
+        else:
+            boolean = False
+        return Ciudadano(cuilUserINT,telefono,soliRechazada,boolean)
+    else:
+        print("el usuario a modificar no existe.")
+        menuAdmin(AdminEnRuntime)
+def modificacionDeUsuario(adminEnRuntime,ciudadano):
+    pass
 
 def EstaElUsernameCiudadano():
     cuilCiudadano=str(input("Ingrese su CUIL correspondiente(EJ:42382331653), en caso de querer volver atras ingrese el numero 0: "))
@@ -380,19 +418,21 @@ def menuCitizen(ciudadanoEnRuntime):
                     print("Ingresaste un valor invalido,cargue la información de nuevo")
                     menuCitizen(ciudadanoEnRuntime)
         elif x == 2:
-            pass
+            menuCitizen(ciudadanoEnRuntime)
         elif x == 3:
             if ciudadanoEnRuntime.estaBloqueado == True:
                 print("Actualmente se encuentra bloqueado, comuniquese con un administrador.")
                 menuCitizen(ciudadanoEnRuntime)
             else:
-                pass
+                print("Se encuentra bloqueado en estos momentos.")
+                menuCitizen(ciudadanoEnRuntime)
         elif x == 4:
             mapa()
             menuCitizen(ciudadanoEnRuntime)
 
         elif x == 5:
             print("Se ha cerrado la sesión correctamente.")
+            login()
         else:
             print("opción invalida, seleccione otra vez.")
             menuCitizen(ciudadanoEnRuntime)

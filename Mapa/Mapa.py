@@ -13,6 +13,6 @@ def mapa():
     for i, label in enumerate(nombres):
         plt.annotate(label, (x[i], y[i]))
     colores = [0,1]
-    plt.scatter(x, y, s = 100, c=colores,cmap = 'Blues', marker='o', edgecolor='black', linewidths=2, alpha=0.55)
+    plt.scatter(x, y, s = 100, c=colores,cmap = 'Blues', marker='o', edgecolor='black', linewidths=2, alpha=0.55)#s se le va a pasar una lista con el cantidad de personas multiplicad
     plt.title('EVENT-IT')
     plt.show()

@@ -1,5 +1,7 @@
+import datetime
+
 from Anses.Anses import leerCuilsDelAnses, leerCiudadano, leerDataEspecificaDeCiudadano, escribirCiudadano, \
-    leerDataEspecificaDeAdmin, escribirAdministrador, leerTiposDeEvento, escribirEvento
+    leerDataEspecificaDeAdmin, escribirAdministrador, leerTiposDeEvento, escribirEvento, modificarEstadoDeBloqueo
 from GestionUsuarios.Ciudadano import Ciudadano
 from GestionUsuarios.Administrador import Administrador
 from GestionUsuarios.ABM import crearAdministrador, eliminarAdministrador, modificarUsernameAdministrador, modificarContrasenaDeAdmin
@@ -148,7 +150,7 @@ def menuAdmin(AdminEnRuntime):
     print("4-Crear administrador")
     print("5-Modificar administrador")
     print("6-Eliminar administrador")
-    print("7-Salir del programa")
+    print("7-Cerrar la sesión")
     try:
         x=int(input("seleccione la opción: "))
         if x == 1:
@@ -157,10 +159,13 @@ def menuAdmin(AdminEnRuntime):
         elif x == 2:
             citizenAModificarEstado = generadorDeCitizenParaBloqueoODesbloqueo(AdminEnRuntime)
             AdminEnRuntime.bloquearCiudadano(citizenAModificarEstado)
+            modificarEstadoDeBloqueo(citizenAModificarEstado)
             menuAdmin(AdminEnRuntime)
 
-            menuAdmin(AdminEnRuntime)
         elif x == 3:
+            citizenAModificarEstado = generadorDeCitizenParaBloqueoODesbloqueo(AdminEnRuntime)
+            AdminEnRuntime.desbloquearCiudadano(citizenAModificarEstado)
+            modificarEstadoDeBloqueo(citizenAModificarEstado)
             menuAdmin(AdminEnRuntime)
         elif x == 4:
             if AdminEnRuntime.accesoAABM == True:
@@ -336,8 +341,7 @@ def generadorDeCitizenParaBloqueoODesbloqueo(AdminEnRuntime):
     else:
         print("el usuario a modificar no existe.")
         menuAdmin(AdminEnRuntime)
-def modificacionDeUsuario(adminEnRuntime,ciudadano):
-    pass
+
 
 def EstaElUsernameCiudadano():
     cuilCiudadano=str(input("Ingrese su CUIL correspondiente(EJ:42382331653), en caso de querer volver atras ingrese el numero 0: "))
@@ -384,14 +388,14 @@ def crearCiudadanoEnRuntime(cuil,celular,posicionDelCuil):
         bloqueoBOOLEAN = True
     else:
         bloqueoBOOLEAN = False
-    ciudadanoEnRuntime = Ciudadano(cuil,posicionDelCuil,solicitudesR,bloqueoBOOLEAN)
+    ciudadanoEnRuntime = Ciudadano(cuil,celular,solicitudesR,bloqueoBOOLEAN)
     menuCitizen(ciudadanoEnRuntime)
 def menuCitizen(ciudadanoEnRuntime):
     print("1-Crear Evento")
     print("2-Ver invitaciones")
     print("3-Enviar invitación")
     print("4-Ver mapa")
-    print("5-Salir del programa")
+    print("5-Cerrar la sesión")
     try:
         x = int(input("Seleccione la opción:"))
         if x == 1:
@@ -402,7 +406,9 @@ def menuCitizen(ciudadanoEnRuntime):
                 try:
                     nombre = str(input("Escriba el nombre del evento: "))
                     ano = int(input("Escriba el año del evento de forma numerica(EJ 2021): "))
+                    chequerAno(ano,ciudadanoEnRuntime)
                     mes = int(input("Escriba el mes de forma numerica(EJ 12): "))
+                    chequermes(mes,ciudadanoEnRuntime)
                     dia = int(input("Escriba el dia de forma numerica(EJ 26): "))
                     hora = int(input("Escriba la hora de forma numerica(23): "))
                     minuto = int(input("Escriba el minuto de foma numerica(37): "))
@@ -424,7 +430,6 @@ def menuCitizen(ciudadanoEnRuntime):
                 print("Actualmente se encuentra bloqueado, comuniquese con un administrador.")
                 menuCitizen(ciudadanoEnRuntime)
             else:
-                print("Se encuentra bloqueado en estos momentos.")
                 menuCitizen(ciudadanoEnRuntime)
         elif x == 4:
             mapa()
@@ -465,5 +470,35 @@ def chequerCantidadMaximaDePersonas():
     else:
         print("Cargaste un valor invalido, vuelva a cargarlo.")
         chequerCantidadMaximaDePersonas()
-
-
+def chequerAno(ano,ciudadanoEnRuntime):
+    try:
+        if ano < datetime.datetime.now().year:
+            raise ValueError
+        else:
+            pass
+    except ValueError:
+        print("El año ingresado ya pasó")
+        menuCitizen(ciudadanoEnRuntime)
+def chequermes(mes,ciudadanoEnRuntime):
+    try:
+        if mes>0:
+            if mes <= 12:
+                pass
+            else:
+                raise ValueError
+        else:
+            raise ValueError
+    except ValueError:
+        print("El mes ingresado es invalido")
+        menuCitizen(ciudadanoEnRuntime)
+def chequerdia(ano,mes,dia,ciudadanoEnRuntime):
+    try:
+        if dia > 0:
+            if mes == 2:
+                if ano % 400 == 0:
+                    if ano % 100 != 0 and ano % 4 == 0:
+                        if dia > 29:
+                            pass
+                        else:
+    except ValueError:
+        print("La fecha es invalida")

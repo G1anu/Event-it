@@ -18,15 +18,12 @@ class Ciudadano():
         return newEvento
     def ciudadanoAEscribir(self):
         return [str(self.CUIL) , str(self.telefono), str(self.solicitudesRechazadas) , str(self.booleanNumericoEstaBloqueado())]
-    #(str(self.CUIL) + "," + str(self.telefono) + "," + str(self.solicitudesRechazadas) + "," + str(self.booleanNumericoEstaBloqueado()))
     def aceptarSolicitud(self):
         pass
     def rechazarSolicitud(self):
         pass
     def enviarSolicitud(self, Ciudadano, CUILAEnviar, evento):
-        if self.estaBloqueado == True:
-            return "Estas bloqueado, contactate con un administrador para ser desbloqueado."
-        elif evento.estaLleno == True:
+        if evento.estaLleno == True:
             return "el evento no tiene mas capacidad disponible"
         else:
             CuilSender = Ciudadano.CUIL

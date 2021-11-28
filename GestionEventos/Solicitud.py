@@ -8,5 +8,5 @@ class Solicitud():
         self.evento = evento
         self.fechaDeEnvio = datetime.now()
 
-    def SolicitudString(self):
+    def solicitudAEscrbir(self):
         return [str(self.CUILSender), str(self.CUILReceiver), str(self.evento), str(self.fechaDeEnvio)]

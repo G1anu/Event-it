@@ -41,10 +41,3 @@ class Administrador():
         else:
             escribirTipoDeEvento(tipoNuevo)
             print("se ha guardado el tipo de evento")
-
-
-
-
-
-
-

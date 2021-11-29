@@ -9,6 +9,12 @@ class Evento():
         self.estaLleno = False
         self.x = vectorX
         self.y = vectorY
+    def setCantidadDePersonas(self,personas):
+        self.cantidad_de_personas = personas
+        return self.cantidad_de_personas
+    def setEstaLleno(self,estaLLeno):
+        self.estaLleno = estaLLeno
+        return self.estaLleno
     def booleanNumericoEstaLleno(self):
         if self.estaLleno == True:
             return 1

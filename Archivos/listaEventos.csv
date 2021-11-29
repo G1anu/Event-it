@@ -1,3 +1,5 @@
-nombre,fecha,tipoDeEvento,cantidad_de_personas,cantidad_maxima_de_personas,boolean_numerico_esta_lleno,coordenada_en_x,coordenada_en_y
-cena,2021-11-28 21:30:00,ir a comer,1,2,0,220.0,-110.0
-almuerzo,2021-12-05 14:00:00,None,1,12,0,10.0,10.0
+nombre,fecha,tipoDeEvento,cantidad_de_personas,cantidad_maxima_de_personas,boolean_numerico_esta_lleno,"coordenada_en_x,coordenada_en_y"
+almuerzo,2021-12-05 14:00:00,ir a comer,5,12,0,10.0,10.0
+concierto,2021-12-28 02:30:00,concierto,100,10000,0,90.0,50.0
+Cumple del Mike,2021-12-22 00:00:00,cumpleanos,1,50,0,-35.0,14.0
+partido 5 v 5,2021-12-04 17:00:00,partido de futbol,1,10,0,10.0,50.0

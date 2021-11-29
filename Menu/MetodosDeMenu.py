@@ -1,7 +1,9 @@
 import datetime
 
 from Anses.Anses import leerCuilsDelAnses, leerCiudadano, leerDataEspecificaDeCiudadano, escribirCiudadano, \
-    leerDataEspecificaDeAdmin, escribirAdministrador, leerTiposDeEvento, escribirEvento, modificarEstadoDeBloqueo
+    leerDataEspecificaDeAdmin, escribirAdministrador, leerTiposDeEvento, escribirEvento, modificarEstadoDeBloqueo, \
+    leerDataEspecificaEvento, checkerCaducidadDeEventos, escribirSolicitud, constructorDeEventoEnRuntime, \
+    checkerCaducidadDeInvitacion
 from GestionUsuarios.Ciudadano import Ciudadano
 from GestionUsuarios.Administrador import Administrador
 from GestionUsuarios.ABM import crearAdministrador, eliminarAdministrador, modificarUsernameAdministrador, modificarContrasenaDeAdmin
@@ -14,14 +16,14 @@ def login():
     print("3- Iniciar sesion como usuario")
     print("4- Salir del programa")
     try:
-        x=int(input("seleccione la opción: "))
-        if x==1:
+        z=int(input("seleccione la opción: "))
+        if z==1:
             ContieneCuilEnAnses()
-        elif x==2:
+        elif z==2:
             EstaElUsernameAdmin()
-        elif x==3:
+        elif z==3:
             EstaElUsernameCiudadano()
-        elif x==4:
+        elif z==4:
             print("Gracias por usar el programa")
         else:
             print("opción invalida, seleccione otra vez")
@@ -342,7 +344,6 @@ def generadorDeCitizenParaBloqueoODesbloqueo(AdminEnRuntime):
         print("el usuario a modificar no existe.")
         menuAdmin(AdminEnRuntime)
 
-
 def EstaElUsernameCiudadano():
     cuilCiudadano=str(input("Ingrese su CUIL correspondiente(EJ:42382331653), en caso de querer volver atras ingrese el numero 0: "))
     if cuilCiudadano == "0":
@@ -391,27 +392,32 @@ def crearCiudadanoEnRuntime(cuil,celular,posicionDelCuil):
     ciudadanoEnRuntime = Ciudadano(cuil,celular,solicitudesR,bloqueoBOOLEAN)
     menuCitizen(ciudadanoEnRuntime)
 def menuCitizen(ciudadanoEnRuntime):
+    checkerCaducidadDeEventos()
     print("1-Crear Evento")
     print("2-Ver invitaciones")
     print("3-Enviar invitación")
     print("4-Ver mapa")
     print("5-Cerrar la sesión")
     try:
-        x = int(input("Seleccione la opción:"))
-        if x == 1:
+        r = int(input("Seleccione la opción: "))
+        if r == 1:
             if ciudadanoEnRuntime.estaBloqueado == True:
                 print("Actualmente se encuentra bloqueado, comuniquese con un administrador.")
                 menuCitizen(ciudadanoEnRuntime)
             else:
                 try:
                     nombre = str(input("Escriba el nombre del evento: "))
+                    chequerNombreYaUsado(nombre,ciudadanoEnRuntime)
                     ano = int(input("Escriba el año del evento de forma numerica(EJ 2021): "))
-                    chequerAno(ano,ciudadanoEnRuntime)
+                    chequerValidezAno(ano,ciudadanoEnRuntime)
                     mes = int(input("Escriba el mes de forma numerica(EJ 12): "))
-                    chequermes(mes,ciudadanoEnRuntime)
+                    chequerValidezmes(mes,ciudadanoEnRuntime)
                     dia = int(input("Escriba el dia de forma numerica(EJ 26): "))
+                    chequerValidezdia(ano, mes, dia, ciudadanoEnRuntime)
                     hora = int(input("Escriba la hora de forma numerica(23): "))
+                    chequerValidezHora(hora, ciudadanoEnRuntime)
                     minuto = int(input("Escriba el minuto de foma numerica(37): "))
+                    chequerValidezFecha(ano, mes, dia, hora, minuto, ciudadanoEnRuntime)
                     tipoDeEvento = chequertipoEvento()
                     cantidadMaximaDePersonas = chequerCantidadMaximaDePersonas()
                     coordenadaEnx = float(input("Escriba la coordenada en el eje X: "))
@@ -423,24 +429,31 @@ def menuCitizen(ciudadanoEnRuntime):
                 except ValueError:
                     print("Ingresaste un valor invalido,cargue la información de nuevo")
                     menuCitizen(ciudadanoEnRuntime)
-        elif x == 2:
+        elif r == 2:
+            checkerCaducidadDeInvitacion()
             menuCitizen(ciudadanoEnRuntime)
-        elif x == 3:
+        elif r == 3:
             if ciudadanoEnRuntime.estaBloqueado == True:
                 print("Actualmente se encuentra bloqueado, comuniquese con un administrador.")
                 menuCitizen(ciudadanoEnRuntime)
             else:
+                checkerCaducidadDeEventos()
+                UsernameAEnviar = chequerValidezUsernameAEnviar(ciudadanoEnRuntime)
+                eventoDeLaSolicitud = selectorDeEvento(ciudadanoEnRuntime)
+                evento = constructorDeEventoEnRuntime(eventoDeLaSolicitud)
+                solicitud = ciudadanoEnRuntime.enviarSolicitud(ciudadanoEnRuntime,UsernameAEnviar,evento)
+                escribirSolicitud(solicitud)
+                print("se ha enviado la invitación")
                 menuCitizen(ciudadanoEnRuntime)
-        elif x == 4:
+        elif r == 4:
+            checkerCaducidadDeEventos()
             mapa()
             menuCitizen(ciudadanoEnRuntime)
-
-        elif x == 5:
+        elif r == 5:
             print("Se ha cerrado la sesión correctamente.")
             login()
         else:
-            print("opción invalida, seleccione otra vez.")
-            menuCitizen(ciudadanoEnRuntime)
+            raise ValueError
     except ValueError:
         print("valor incorrecto, vuelva a elegir el numero")
         menuCitizen(ciudadanoEnRuntime)
@@ -470,7 +483,23 @@ def chequerCantidadMaximaDePersonas():
     else:
         print("Cargaste un valor invalido, vuelva a cargarlo.")
         chequerCantidadMaximaDePersonas()
-def chequerAno(ano,ciudadanoEnRuntime):
+def chequerNombreYaUsado(nombre,ciudadanoEnRuntime):
+    listaNombresDeEventos = []
+    leerDataEspecificaEvento(listaNombresDeEventos,0)
+    estaRepetidoElNombre = False
+    indice = 0
+    while indice < len(listaNombresDeEventos):
+        if nombre == listaNombresDeEventos[indice]:
+            estaRepetidoElNombre = True
+            indice = len(listaNombresDeEventos)
+        else:
+            indice = indice + 1
+    if estaRepetidoElNombre == True:
+        print("Ya existe un evento con este nombre")
+        menuCitizen(ciudadanoEnRuntime)
+    else:
+        pass
+def chequerValidezAno(ano,ciudadanoEnRuntime):
     try:
         if ano < datetime.datetime.now().year:
             raise ValueError
@@ -479,7 +508,7 @@ def chequerAno(ano,ciudadanoEnRuntime):
     except ValueError:
         print("El año ingresado ya pasó")
         menuCitizen(ciudadanoEnRuntime)
-def chequermes(mes,ciudadanoEnRuntime):
+def chequerValidezmes(mes,ciudadanoEnRuntime):
     try:
         if mes>0:
             if mes <= 12:
@@ -491,14 +520,169 @@ def chequermes(mes,ciudadanoEnRuntime):
     except ValueError:
         print("El mes ingresado es invalido")
         menuCitizen(ciudadanoEnRuntime)
-def chequerdia(ano,mes,dia,ciudadanoEnRuntime):
+def chequerValidezdia(ano,mes,dia,ciudadanoEnRuntime):
     try:
         if dia > 0:
-            if mes == 2:
+            if mes == 1:
+                if dia > 31:
+                    raise ValueError
+                else:
+                    pass
+            elif mes == 2:
                 if ano % 400 == 0:
                     if ano % 100 != 0 and ano % 4 == 0:
                         if dia > 29:
-                            pass
+                            raise ValueError
                         else:
+                            pass
+                    else:
+                        if dia > 28:
+                            raise ValueError
+                        else:
+                            pass
+            elif mes == 3:
+                if dia > 31:
+                    raise ValueError
+                else:
+                    pass
+            elif mes == 4:
+                if dia > 30:
+                    raise ValueError
+                else:
+                    pass
+            elif mes == 5:
+                if dia > 31:
+                    raise ValueError
+                else:
+                    pass
+            elif mes == 6:
+                if dia > 30:
+                    raise ValueError
+                else:
+                    pass
+            elif mes == 7:
+                if dia > 31:
+                    raise ValueError
+                else:
+                    pass
+            elif mes == 8:
+                if dia > 31:
+                    raise ValueError
+                else:
+                    pass
+            elif mes == 9:
+                if dia > 30:
+                    raise ValueError
+                else:
+                    pass
+            elif mes == 10:
+                if dia > 31:
+                    raise ValueError
+                else:
+                    pass
+            elif mes == 11:
+                if dia > 30:
+                    raise ValueError
+                else:
+                    pass
+            elif mes == 12:
+                if dia > 31:
+                    raise ValueError
+                else:
+                    pass
+            else:
+                raise ValueError
+        else:
+            raise ValueError
     except ValueError:
         print("La fecha es invalida")
+        menuCitizen(ciudadanoEnRuntime)
+def chequerValidezHora(hora,ciudadanoEnRuntime):
+    try:
+        if hora >= 0:
+            if hora <24:
+                pass
+            else:
+                raise ValueError
+        else:
+            raise ValueError
+    except ValueError:
+        print("ingreso una hora invalida")
+        menuCitizen(ciudadanoEnRuntime)
+def chequerValidezMinuto(minuto,ciudadanoEnRuntime):
+    try:
+        if minuto >= 0:
+            if minuto <60:
+                pass
+            else:
+                raise ValueError
+        else:
+            raise ValueError
+    except ValueError:
+        print("ingreso un minuto invalido")
+        menuCitizen(ciudadanoEnRuntime)
+def chequerValidezFecha(ano,mes,dia,hora,minuto,ciudadanoEnRuntime):
+    fecha = datetime.datetime(ano,mes,dia,hora,minuto)
+    if fecha <= datetime.datetime.now():
+        print("la fecha introducida ya pasó")
+        menuCitizen(ciudadanoEnRuntime)
+    else:
+        pass
+def chequerValidezUsernameAEnviar(ciudadanoEnRuntime):
+    try:
+        listaCUILS = []
+        leerDataEspecificaDeCiudadano(listaCUILS,0)
+        listaCUILS.remove(str(ciudadanoEnRuntime.getCUIL()))
+        indice = 0
+        while indice < len(listaCUILS):
+            print(listaCUILS[indice])
+            indice = indice + 1
+        nombre = int(input("ingrese el CUIL de la persona a la que desea enviarle la solicitud. Para volver atras ingrese 0: "))
+        if nombre == 0:
+            menuCitizen(ciudadanoEnRuntime)
+        else:
+            indice2 = 0
+            existe = False
+            while indice2 < len(listaCUILS):
+                if nombre == int(listaCUILS[indice2]):
+                    existe = True
+                    indice2 = len(listaCUILS)
+                else:
+                    indice2 = indice2 + 1
+            if existe == True:
+                return nombre
+            else:
+                raise ValueError
+    except ValueError:
+        print("Ingresaste un valor invalido")
+        chequerValidezUsernameAEnviar(ciudadanoEnRuntime)
+def selectorDeEvento(ciudadanoEnRuntime):
+    checkerCaducidadDeEventos()
+    listaNombres = []
+    leerDataEspecificaEvento(listaNombres,0)
+    indice1 = 0
+    while indice1 < len(listaNombres):
+        print(listaNombres[indice1])
+        indice1 = indice1 + 1
+    try:
+        nombreEvento = str(input("ingrese el nombre del evento al que desea invitar. Para volver al menu ingrese 0: "))
+        if nombreEvento == "0":
+            menuCitizen(ciudadanoEnRuntime)
+        else:
+            indice2 = 0
+            existeElEvento = False
+            while indice2 < len(listaNombres):
+                if nombreEvento == listaNombres[indice2]:
+                    existeElEvento = True
+                    indice2 = len(listaNombres)
+                else:
+                    indice2 = indice2 + 1
+            if existeElEvento == True:
+                return nombreEvento
+            else:
+                raise ValueError
+    except ValueError:
+        print("ingreso un nombre invalido")
+        selectorDeEvento(ciudadanoEnRuntime)
+def lectorDeInvitacionesDeCUILEspecifico(cuidadanoEnRuntime):
+    pass

@@ -15,11 +15,28 @@ from Anses.Anses import leerDataEspecificaDeCiudadano
 #print(listaUsuarios)
 #listaYo= listaUsuarios[0]
 #print(listaYo)
-listaCUILMembrillero= []
-leerCuilsDelAnses(listaCUILMembrillero)
-print(listaCUILMembrillero)
+#listaCUILMembrillero= []
+#leerCuilsDelAnses(listaCUILMembrillero)
+#print(listaCUILMembrillero)
 #listaCUILMacumbero = []
 #leerDataEspecificaDeCiudadano(listaCUILMacumbero,0)
 #print(listaCUILMacumbero)
+from Mapa.Mapa import mapa
 
+try:
+    x= int(input("ingrese el valor: "))
+    if x == 1:
+        print("membrillo1")
+    elif x == 2:
+        print("membrillo2")
+    elif x == 3:
+        print("membrillo3")
+    elif x == 4:
+        mapa()
+    elif x == 5:
+        print("membrillo5")
+    else:
+        print("dulce de batata")
+except ValueError:
+    print("salamin con queso")
 

@@ -16,6 +16,8 @@ class Ciudadano():
     def crearEvento(self,nombre,ano,mes,dia,hora,minuto,tipo_de_evento,cantidad_maxima_de_personas,vectorX,vectorY):
         newEvento = Evento(nombre,ano,mes,dia,hora,minuto,tipo_de_evento,cantidad_maxima_de_personas,vectorX,vectorY)
         return newEvento
+    def getCUIL(self):
+        return self.CUIL
     def ciudadanoAEscribir(self):
         return [str(self.CUIL) , str(self.telefono), str(self.solicitudesRechazadas) , str(self.booleanNumericoEstaBloqueado())]
     def aceptarSolicitud(self):
@@ -24,8 +26,9 @@ class Ciudadano():
         pass
     def enviarSolicitud(self, Ciudadano, CUILAEnviar, evento):
         if evento.estaLleno == True:
-            return "el evento no tiene mas capacidad disponible"
+            print("el evento no tiene mas capacidad disponible")
         else:
             CuilSender = Ciudadano.CUIL
-            newSolicitud = Solicitud(CuilSender, CUILAEnviar, evento)
+            EventName = evento.nombre
+            newSolicitud = Solicitud(CuilSender, CUILAEnviar, EventName)
             return newSolicitud

@@ -13,6 +13,11 @@ class Ciudadano():
             return 1
         else:
             return 0
+    def checkEstadoDeBloqueo(self):
+        if self.solicitudesRechazadas >= 5:
+            self.estaBloqueado = True
+        else:
+            pass
     def crearEvento(self,nombre,ano,mes,dia,hora,minuto,tipo_de_evento,cantidad_maxima_de_personas,vectorX,vectorY):
         newEvento = Evento(nombre,ano,mes,dia,hora,minuto,tipo_de_evento,cantidad_maxima_de_personas,vectorX,vectorY)
         return newEvento
@@ -20,10 +25,15 @@ class Ciudadano():
         return self.CUIL
     def ciudadanoAEscribir(self):
         return [str(self.CUIL) , str(self.telefono), str(self.solicitudesRechazadas) , str(self.booleanNumericoEstaBloqueado())]
-    def aceptarSolicitud(self):
-        pass
-    def rechazarSolicitud(self):
-        pass
+    def aceptarSolicitud(self,evento):
+        evento.cantidad_de_personas = evento.cantidad_de_personas + 1
+        evento.checkSiEstaLleno()
+        return evento
+    def rechazarSolicitud(self,personaEnviante):
+        personaEnviante.solicitudesRechazadas = personaEnviante.solicitudesRechazadas + 1
+        personaEnviante.checkEstadoDeBloqueo()
+        return personaEnviante
+
     def enviarSolicitud(self, Ciudadano, CUILAEnviar, evento):
         if evento.estaLleno == True:
             print("el evento no tiene mas capacidad disponible")

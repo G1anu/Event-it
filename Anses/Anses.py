@@ -61,6 +61,44 @@ def modificarEstadoDeBloqueo(ciudadano):
     citizenListPlacerAfterClean(listaCitizens)
     escribirCiudadano(ciudadano)
     print("se modifico el estado de bloqueo del usuario con CUIL " + str(ciudadano.CUIL) + ".")
+def generadorDeCitizenEnRuntime(CUIL):
+    listaCUILS = []
+    leerDataEspecificaDeCiudadano(listaCUILS,0)
+    indice = 0
+    posicionDelUser = -1
+    while indice < len(listaCUILS):
+        if CUIL == (listaCUILS[indice]):
+            posicionDelUser = indice
+            indice = len(listaCUILS)
+        else:
+            indice = indice + 1
+    listaUsers = []
+    leerCiudadano(listaUsers)
+    citizenACrear = listaUsers[posicionDelUser]
+    boolean = False
+    if (int(citizenACrear[3])) == 1:
+        boolean = False
+    else:
+        pass
+    citizen = Ciudadano(CUIL,int(citizenACrear[1]),int(citizenACrear[2]),boolean)
+    return citizen
+def reescribirCitizenModificado(citizenModificado):
+    listaNombres = []
+    leerDataEspecificaDeCiudadano(listaNombres,0)
+    indice = 0
+    posicionDelNombre = -1
+    while indice < len(listaNombres):
+        if citizenModificado.CUIL == (int(listaNombres[indice])):
+            posicionDelNombre = indice
+            indice=len(listaNombres)
+        else:
+            indice = indice + 1
+    listaCiudadanos = []
+    leerCiudadano(listaCiudadanos)
+    listaCiudadanos.pop(posicionDelNombre)
+    citizenCleaner()
+    citizenListPlacerAfterClean(listaCiudadanos)
+    escribirCiudadano(citizenModificado)
 
 def escribirTipoDeEvento(tipoDeEvento):
     with open("../Archivos/tiposDeEventos.csv","a",newline="") as listaTipos:
@@ -185,6 +223,22 @@ def constructorDeEventoEnRuntime(nombreEvento):
         pass
     eventoEnRuntime.setEstaLleno(booleanEstaLLeno)
     return eventoEnRuntime
+def modificarEventoEnPersistencia(evento):
+    listaNombresDeEventos = []
+    leerDataEspecificaEvento(listaNombresDeEventos,0)
+    indice = 0
+    posicionDelEvento = -1
+    while indice < len(listaNombresDeEventos):
+        if evento.nombre == listaNombresDeEventos[indice]:
+            posicionDelEvento = indice
+            indice = len(listaNombresDeEventos)
+        else: indice = indice + 1
+    listaEventos = []
+    leerEvento(listaEventos)
+    listaEventos.pop(posicionDelEvento)
+    eventCleaner()
+    eventListPlacerAfterClean(listaEventos)
+    escribirEvento(evento)
 
 def escribirSolicitud(solicitud):
     solicitudParaEscribir = solicitud.solicitudAEscrbir()
@@ -250,6 +304,12 @@ def checkerCaducidadDeInvitacion():
             indiceListaPosiciones = indiceListaPosiciones + 1
         requestCleaner()
         requestListPlacerAfterClean(listaSolicitudes)
+def borrarsolicitud(listaPosiciones):
+    listaSolicitudes = []
+    leerSolicitudes(listaSolicitudes)
+    listaSolicitudes.pop(listaPosiciones[0])
+    requestCleaner()
+    requestListPlacerAfterClean(listaSolicitudes)
 
 def leerDataEspecificaDeAdmin(listaAdmin,valorABuscar):
     with open("../Archivos/listaAdministradores.csv","r") as listaAdministradores:

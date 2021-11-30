@@ -3,7 +3,8 @@ import datetime
 from Anses.Anses import leerCuilsDelAnses, leerCiudadano, leerDataEspecificaDeCiudadano, escribirCiudadano, \
     leerDataEspecificaDeAdmin, escribirAdministrador, leerTiposDeEvento, escribirEvento, modificarEstadoDeBloqueo, \
     leerDataEspecificaEvento, checkerCaducidadDeEventos, escribirSolicitud, constructorDeEventoEnRuntime, \
-    checkerCaducidadDeInvitacion
+    checkerCaducidadDeInvitacion, leerDataEspecificaSolicitudes, leerSolicitudes, modificarEventoEnPersistencia, \
+    generadorDeCitizenEnRuntime, reescribirCitizenModificado, borrarsolicitud
 from GestionUsuarios.Ciudadano import Ciudadano
 from GestionUsuarios.Administrador import Administrador
 from GestionUsuarios.ABM import crearAdministrador, eliminarAdministrador, modificarUsernameAdministrador, modificarContrasenaDeAdmin
@@ -430,8 +431,7 @@ def menuCitizen(ciudadanoEnRuntime):
                     print("Ingresaste un valor invalido,cargue la información de nuevo")
                     menuCitizen(ciudadanoEnRuntime)
         elif r == 2:
-            checkerCaducidadDeInvitacion()
-            menuCitizen(ciudadanoEnRuntime)
+            menuInvitaciones(ciudadanoEnRuntime)
         elif r == 3:
             if ciudadanoEnRuntime.estaBloqueado == True:
                 print("Actualmente se encuentra bloqueado, comuniquese con un administrador.")
@@ -684,5 +684,105 @@ def selectorDeEvento(ciudadanoEnRuntime):
     except ValueError:
         print("ingreso un nombre invalido")
         selectorDeEvento(ciudadanoEnRuntime)
-def lectorDeInvitacionesDeCUILEspecifico(cuidadanoEnRuntime):
-    pass
+def menuInvitaciones(ciudadanoEnRuntime):
+    checkerCaducidadDeEventos()
+    checkerCaducidadDeInvitacion()
+    posicionesDeInvitaciones = checkerHayInvitaciones(ciudadanoEnRuntime)
+    aceptaOrechaza = mostradorDeInvitacion(ciudadanoEnRuntime, posicionesDeInvitaciones)
+    if aceptaOrechaza == 0:
+        menuCitizen(ciudadanoEnRuntime)
+    elif aceptaOrechaza == 1:
+        NombreEvento = getterNombreEventoDeSolicitud(posicionesDeInvitaciones)
+        Evento = constructorDeEventoEnRuntime(NombreEvento)
+        ciudadanoEnRuntime.aceptarSolicitud(Evento)
+        modificarEventoEnPersistencia(Evento)
+        borrarsolicitud(posicionesDeInvitaciones)
+        if len(posicionesDeInvitaciones) >= 1:
+            print("Se aceptó la invitación")
+            menuInvitaciones(ciudadanoEnRuntime)
+        else:
+            print("Se aceptó la invitación, no tiene mas invitaciones para responder")
+            menuCitizen(ciudadanoEnRuntime)
+    elif aceptaOrechaza == -1:
+        CUIL = getterCUILEnvianteDeSolicitud(posicionesDeInvitaciones)
+        User = generadorDeCitizenEnRuntime(CUIL)
+        ciudadanoEnRuntime.rechazarSolicitud(User)
+        reescribirCitizenModificado(User)
+        borrarsolicitud(posicionesDeInvitaciones)
+        if len(posicionesDeInvitaciones) >= 1:
+            print("Se rechazo la invitacion")
+            menuInvitaciones(ciudadanoEnRuntime)
+        else:
+            print("Se rechazo la invitación, no tiene mas invitaciones para responder")
+            menuCitizen(ciudadanoEnRuntime)
+def checkerHayInvitaciones(ciudadanoEnRuntime):
+    listaCUILSRecievers = []
+    leerDataEspecificaSolicitudes(listaCUILSRecievers,1)
+    listaPosiciones = []
+    indice = 0
+    while indice < len(listaCUILSRecievers):
+        if int(ciudadanoEnRuntime.getCUIL()) == int(listaCUILSRecievers[indice]):
+            listaPosiciones.append(indice)
+            indice = indice + 1
+        else:
+            indice = indice + 1
+    if len(listaPosiciones) == 0:
+        print("No tiene solicitudes en estos momentos")
+        menuCitizen(ciudadanoEnRuntime)
+    else:
+        print("Tiene " + str(len(listaPosiciones)) + " solicitudes en estos momentos.")
+        return listaPosiciones
+def mostradorDeInvitacion(ciudadanoEnRuntime,listaPosiciones):
+    try:
+        listaInvitacionesGlobal = []
+        leerSolicitudes(listaInvitacionesGlobal)
+        invitacion = listaInvitacionesGlobal[listaPosiciones[0]]
+        ListaNombresEventos = []
+        leerDataEspecificaEvento(ListaNombresEventos,0)
+        indice = 0
+        posicionDeCoord = -1
+        while indice < len(ListaNombresEventos):
+            if invitacion[2] == ListaNombresEventos[indice]:
+                posicionDeCoord = indice
+                indice = len(ListaNombresEventos)
+            else:
+                indice = indice + 1
+        ListaCoordEjeX = []
+        leerDataEspecificaEvento(ListaCoordEjeX, 6)
+        ListaCoordEjeY = []
+        leerDataEspecificaEvento(ListaCoordEjeY, 7)
+        coordX = int(ListaCoordEjeX[posicionDeCoord])
+        coordY = int(ListaCoordEjeY[posicionDeCoord])
+        zona = " "
+        if coordX >= 0 and coordY >= 0:
+            zona = "zona noreste"
+        elif coordX < 0 and coordY >= 0:
+            zona = "zona noroeste"
+        elif coordX < 0 and coordY < 0:
+            zona = "zona suroeste"
+        elif coordX >= 0 and coordY < 0:
+            zona = "zona sureste"
+        print("Esta invitacion fue enviada a las " + invitacion[3] + " por el usuario con el CUIL " + invitacion[0] + " para invitarle al evento " + invitacion[2] + ".Este se encuentra en la " + zona + " de la ciudad, en la coordenadas " + str(coordX) + " en el eje X y " + str(coordY) + " en el eje Y.")
+        try:
+            k = int(input("ingrese 1 para aceptar la solicitud, 0 para volver atras o -1 para rechazar la solicitud: "))
+            if k == 1:
+                return k
+            elif k == 0:
+                return k
+            elif k == -1:
+                return k
+            else:
+                raise ValueError
+        except ValueError:
+            print("ingreso un valor invalido.")
+            mostradorDeInvitacion(ciudadanoEnRuntime,listaPosiciones)
+    except TypeError:
+        pass #esto lo hago porque cuando se acepta o rechaza una invitación al salir salta un typeError
+def getterNombreEventoDeSolicitud(listaPosiciones):
+    listaNombresEventos = []
+    leerDataEspecificaSolicitudes(listaNombresEventos,2)
+    return listaNombresEventos[listaPosiciones[0]]
+def getterCUILEnvianteDeSolicitud(listaPosiciones):
+    listaCUILSolicitud = []
+    leerDataEspecificaSolicitudes(listaCUILSolicitud, 0)
+    return int(listaCUILSolicitud[listaPosiciones[0]])

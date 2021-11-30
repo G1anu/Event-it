@@ -37,6 +37,7 @@ class Ciudadano():
     def enviarSolicitud(self, Ciudadano, CUILAEnviar, evento):
         if evento.estaLleno == True:
             print("el evento no tiene mas capacidad disponible")
+            return False
         else:
             CuilSender = Ciudadano.CUIL
             EventName = evento.nombre

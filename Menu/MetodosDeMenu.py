@@ -445,9 +445,12 @@ def menuCitizen(ciudadanoEnRuntime):
                 eventoDeLaSolicitud = selectorDeEvento(ciudadanoEnRuntime)
                 evento = constructorDeEventoEnRuntime(eventoDeLaSolicitud)
                 solicitud = ciudadanoEnRuntime.enviarSolicitud(ciudadanoEnRuntime,UsernameAEnviar,evento)
-                escribirSolicitud(solicitud)
-                print("se ha enviado la invitación")
-                menuCitizen(ciudadanoEnRuntime)
+                if solicitud == False:
+                    menuCitizen(ciudadanoEnRuntime)
+                else:
+                    escribirSolicitud(solicitud)
+                    print("se ha enviado la invitación")
+                    menuCitizen(ciudadanoEnRuntime)
         elif r == 4:
             checkerCaducidadDeEventos()
             mapa()

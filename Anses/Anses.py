@@ -241,11 +241,14 @@ def modificarEventoEnPersistencia(evento):
     escribirEvento(evento)
 
 def escribirSolicitud(solicitud):
-    solicitudParaEscribir = solicitud.solicitudAEscrbir()
-    with open("../Archivos/solicitudes.csv","a",newline="") as listaSolicitudes:
-        csv_Request_writer = csv.writer(listaSolicitudes,delimiter=",")
-        csv_Request_writer.writerow(solicitudParaEscribir)
-    listaSolicitudes.close()
+    try:
+        solicitudParaEscribir = solicitud.solicitudAEscrbir()
+        with open("../Archivos/solicitudes.csv","a",newline="") as listaSolicitudes:
+            csv_Request_writer = csv.writer(listaSolicitudes,delimiter=",")
+            csv_Request_writer.writerow(solicitudParaEscribir)
+        listaSolicitudes.close()
+    except AttributeError:
+        pass
 def leerSolicitudes(requestList):
     with open("../Archivos/solicitudes.csv","r") as listaSolicitudes:
         csv_Request_reader = csv.reader(listaSolicitudes)

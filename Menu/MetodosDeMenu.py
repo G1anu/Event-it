@@ -793,32 +793,44 @@ def getterCUILEnvianteDeSolicitud(listaPosiciones):
 def menuRankings():
     checkerCaducidadDeEventos()
     try:
-        print("1-Ver Top 3 de eventos con mas inscripciones")
-        print("2-Ver Top 3 de eventos en la zona noeste")
+        print("1-Ver Top de eventos con mas inscripciones")
+        print("2-Ver Top 3 de eventos en la zona noreste")
         print("3-Ver Top 3 de eventos en la zona noroeste")
         print("4-Ver Top 3 de eventos en la zona sureste")
-        print("5-Ver Top 3 de eventos en la zona suoeste")
+        print("5-Ver Top 3 de eventos en la zona suroeste")
         print("6-Ver mapa de eventos")
         print("7-Salir del menu de los rankings")
         L = int(input("Seleccione la opcion: "))
+        lista = []
+        leerEvento(lista)
         if L == 1:
             rankingGlobal()
             menuRankings()
-        if L == 2:
-            pass
-        if L == 3:
-            pass
-        if L == 4:
-            pass
-        if L == 5:
-            pass
-        if L == 6:
+        elif L == 2:
+            listaNoreste = generateList(1,1,lista)
+            rankingPorZona(listaNoreste)
+            menuRankings()
+        elif L == 3:
+            listaNoroeste = generateList(-1, 1, lista)
+            rankingPorZona(listaNoroeste)
+            menuRankings()
+        elif L == 4:
+            listaSureste = generateList(1, -1, lista)
+            rankingPorZona(listaSureste)
+            menuRankings()
+        elif L == 5:
+            listaSuroeste = generateList(-1, -1, lista)
+            rankingPorZona(listaSuroeste)
+            menuRankings()
+        elif L == 6:
             checkerCaducidadDeEventos()
             mapa()
             menuRankings()
-        if L == 7:
+        elif L == 7:
             print("Se ha cerrado el menu")
             login()
+        else:
+            raise ValueError
     except ValueError:
         print("valor invalido, vuelva a escribirlo")
         menuRankings()
@@ -828,26 +840,11 @@ def rankingGlobal():
     print(lista)
     if len(lista) == 0:
         print("No hay eventos creados en estos instantes.")
-    elif len(lista) == 1:
-        evento = lista[0]
-        coordX = float(evento[6])
-        coordY = float(evento[7])
-        if coordX >= 0 and coordY >= 0:
-            zona = "zona noreste"
-        elif coordX >= 0 and coordY < 0:
-            zona = "zona sureste"
-        elif coordX < 0 and coordY < 0:
-            zona = "zona suroeste"
-        elif coordX < 0 and coordY >= 0:
-            zona = "zona noroeste"
-        print("Solo hay un evento en estos momentos.")
-        print("Posicion - Nombre - zona - Personas inscriptas")
-        print("1 - " + evento[0] + " - " + zona + " - " + evento[3])
-    elif len(lista) == 2:
+    elif len(lista) >= 1:
         sorter(lista)
-        print("Solo hay 2 eventos en estos momentos.")
         print("Posicion - Nombre - zona - Personas inscriptas")
         indice = 0
+        zona = " "
         while indice < len(lista):
             coordX = float(lista[indice][6])
             coordY = float(lista[indice][7])
@@ -862,27 +859,44 @@ def rankingGlobal():
             indicePrinteable = indice + 1
             print(str(indicePrinteable) + " - " + lista[indice][0] + " - " + zona + " - " + lista[indice][3])
             indice = indice + 1
+def rankingPorZona(lista):
+    if len(lista) == 0:
+        print("No hay eventos en esta zona")
+    elif len(lista) == 1:
+        sorter(lista)
+        print("Solo hay 1 evento en estos momentos.")
+        print("Posicion - Nombre - Personas inscriptas")
+        indice = 0
+        while indice < len(lista):
+            indicePrinteable = indice + 1
+            print(str(indicePrinteable) + " - " + lista[indice][0] + " - " + lista[indice][3])
+            indice = indice + 1
+    elif len(lista) == 2:
+        sorter(lista)
+        print("Solo hay 2 evento en estos momentos.")
+        print("Posicion - Nombre - Personas inscriptas")
+        indice = 0
+        while indice < len(lista):
+            indicePrinteable = indice + 1
+            print(str(indicePrinteable) + " - " + lista[indice][0] + " - " + lista[indice][3])
+            indice = indice + 1
     elif len(lista) >= 3:
         sorter(lista)
-        print("Posicion - Nombre - zona - Personas inscriptas")
+        print("Posicion - Nombre - Personas inscriptas")
         indice = 0
-        while indice < 3:
-            coordX = float(lista[indice][6])
-            coordY = float(lista[indice][7])
-            if coordX >= 0 and coordY >= 0:
-                zona = "zona noreste"
-            elif coordX >= 0 and coordY < 0:
-                zona = "zona sureste"
-            elif coordX < 0 and coordY < 0:
-                zona = "zona suroeste"
-            elif coordX < 0 and coordY >= 0:
-                zona = "zona noroeste"
+        while indice < len(lista):
             indicePrinteable = indice + 1
-            print(str(indicePrinteable) + " - " + lista[indice][0] + " - " + zona + " - " + lista[indice][3])
+            print(str(indicePrinteable) + " - " + lista[indice][0] + " - " + lista[indice][3])
             indice = indice + 1
 def sorter(lista):
     n = len(lista)
     for i in range(n - 1):
         for j in range(0, n - i - 1):
-            if lista[j][3] < lista[j + 1][3]:
+            if int(lista[j][3]) < int(lista[j + 1][3]):
                 lista[j], lista[j + 1] = lista[j + 1], lista[j]
+def generateList(x,y,list):
+    toReturn = []
+    for i in range(len(list)):
+        if float(list[i][6])/int(x) > 0 and float(list[i][7])/int(y) > 0:
+            toReturn.append(list[i])
+    return toReturn

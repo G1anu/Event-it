@@ -145,7 +145,7 @@ def eventCleaner():
 def eventListPlacerAfterClean(lista):
     with open("../Archivos/listaEventos.csv","a",newline="")as listaEventos:
         csv_Event_writer = csv.writer(listaEventos,delimiter=",")
-        csv_Event_writer.writerow(["nombre","fecha","tipoDeEvento","cantidad_de_personas","cantidad_maxima_de_personas","boolean_numerico_esta_lleno","coordenada_en_x,coordenada_en_y"])
+        csv_Event_writer.writerow(["nombre","fecha","tipoDeEvento","cantidad_de_personas","cantidad_maxima_de_personas","boolean_numerico_esta_lleno","coordenada_en_x","coordenada_en_y"])
         indice = 0
         while indice <len(lista):
             csv_Event_writer.writerow(lista[indice])

@@ -4,7 +4,7 @@ from Anses.Anses import leerCuilsDelAnses, leerCiudadano, leerDataEspecificaDeCi
     leerDataEspecificaDeAdmin, escribirAdministrador, leerTiposDeEvento, escribirEvento, modificarEstadoDeBloqueo, \
     leerDataEspecificaEvento, checkerCaducidadDeEventos, escribirSolicitud, constructorDeEventoEnRuntime, \
     checkerCaducidadDeInvitacion, leerDataEspecificaSolicitudes, leerSolicitudes, modificarEventoEnPersistencia, \
-    generadorDeCitizenEnRuntime, reescribirCitizenModificado, borrarsolicitud
+    generadorDeCitizenEnRuntime, reescribirCitizenModificado, borrarsolicitud, leerEvento
 from GestionUsuarios.Ciudadano import Ciudadano
 from GestionUsuarios.Administrador import Administrador
 from GestionUsuarios.ABM import crearAdministrador, eliminarAdministrador, modificarUsernameAdministrador, modificarContrasenaDeAdmin
@@ -15,7 +15,8 @@ def login():
     print("1- Registrarse")
     print("2- Iniciar sesion como administrador")
     print("3- Iniciar sesion como usuario")
-    print("4- Salir del programa")
+    print("4-Ver menu de rankings")
+    print("5- Salir del programa")
     try:
         z=int(input("seleccione la opción: "))
         if z==1:
@@ -25,6 +26,8 @@ def login():
         elif z==3:
             EstaElUsernameCiudadano()
         elif z==4:
+            menuRankings()
+        elif z==5:
             print("Gracias por usar el programa")
         else:
             print("opción invalida, seleccione otra vez")
@@ -751,8 +754,8 @@ def mostradorDeInvitacion(ciudadanoEnRuntime,listaPosiciones):
         leerDataEspecificaEvento(ListaCoordEjeX, 6)
         ListaCoordEjeY = []
         leerDataEspecificaEvento(ListaCoordEjeY, 7)
-        coordX = int(ListaCoordEjeX[posicionDeCoord])
-        coordY = int(ListaCoordEjeY[posicionDeCoord])
+        coordX = float(ListaCoordEjeX[posicionDeCoord])
+        coordY = float(ListaCoordEjeY[posicionDeCoord])
         zona = " "
         if coordX >= 0 and coordY >= 0:
             zona = "zona noreste"
@@ -786,3 +789,100 @@ def getterCUILEnvianteDeSolicitud(listaPosiciones):
     listaCUILSolicitud = []
     leerDataEspecificaSolicitudes(listaCUILSolicitud, 0)
     return int(listaCUILSolicitud[listaPosiciones[0]])
+
+def menuRankings():
+    checkerCaducidadDeEventos()
+    try:
+        print("1-Ver Top 3 de eventos con mas inscripciones")
+        print("2-Ver Top 3 de eventos en la zona noeste")
+        print("3-Ver Top 3 de eventos en la zona noroeste")
+        print("4-Ver Top 3 de eventos en la zona sureste")
+        print("5-Ver Top 3 de eventos en la zona suoeste")
+        print("6-Ver mapa de eventos")
+        print("7-Salir del menu de los rankings")
+        L = int(input("Seleccione la opcion: "))
+        if L == 1:
+            rankingGlobal()
+            menuRankings()
+        if L == 2:
+            pass
+        if L == 3:
+            pass
+        if L == 4:
+            pass
+        if L == 5:
+            pass
+        if L == 6:
+            checkerCaducidadDeEventos()
+            mapa()
+            menuRankings()
+        if L == 7:
+            print("Se ha cerrado el menu")
+            login()
+    except ValueError:
+        print("valor invalido, vuelva a escribirlo")
+        menuRankings()
+def rankingGlobal():
+    lista = []
+    leerEvento(lista)
+    print(lista)
+    if len(lista) == 0:
+        print("No hay eventos creados en estos instantes.")
+    elif len(lista) == 1:
+        evento = lista[0]
+        coordX = float(evento[6])
+        coordY = float(evento[7])
+        if coordX >= 0 and coordY >= 0:
+            zona = "zona noreste"
+        elif coordX >= 0 and coordY < 0:
+            zona = "zona sureste"
+        elif coordX < 0 and coordY < 0:
+            zona = "zona suroeste"
+        elif coordX < 0 and coordY >= 0:
+            zona = "zona noroeste"
+        print("Solo hay un evento en estos momentos.")
+        print("Posicion - Nombre - zona - Personas inscriptas")
+        print("1 - " + evento[0] + " - " + zona + " - " + evento[3])
+    elif len(lista) == 2:
+        sorter(lista)
+        print("Solo hay 2 eventos en estos momentos.")
+        print("Posicion - Nombre - zona - Personas inscriptas")
+        indice = 0
+        while indice < len(lista):
+            coordX = float(lista[indice][6])
+            coordY = float(lista[indice][7])
+            if coordX >= 0 and coordY >= 0:
+                zona = "zona noreste"
+            elif coordX >= 0 and coordY < 0:
+                zona = "zona sureste"
+            elif coordX < 0 and coordY < 0:
+                zona = "zona suroeste"
+            elif coordX < 0 and coordY >= 0:
+                zona = "zona noroeste"
+            indicePrinteable = indice + 1
+            print(str(indicePrinteable) + " - " + lista[indice][0] + " - " + zona + " - " + lista[indice][3])
+            indice = indice + 1
+    elif len(lista) >= 3:
+        sorter(lista)
+        print("Posicion - Nombre - zona - Personas inscriptas")
+        indice = 0
+        while indice < 3:
+            coordX = float(lista[indice][6])
+            coordY = float(lista[indice][7])
+            if coordX >= 0 and coordY >= 0:
+                zona = "zona noreste"
+            elif coordX >= 0 and coordY < 0:
+                zona = "zona sureste"
+            elif coordX < 0 and coordY < 0:
+                zona = "zona suroeste"
+            elif coordX < 0 and coordY >= 0:
+                zona = "zona noroeste"
+            indicePrinteable = indice + 1
+            print(str(indicePrinteable) + " - " + lista[indice][0] + " - " + zona + " - " + lista[indice][3])
+            indice = indice + 1
+def sorter(lista):
+    n = len(lista)
+    for i in range(n - 1):
+        for j in range(0, n - i - 1):
+            if lista[j][3] < lista[j + 1][3]:
+                lista[j], lista[j + 1] = lista[j + 1], lista[j]
